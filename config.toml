@@ -1,0 +1,30 @@
+baseurl = "https://example.com/"
+title = "Socratic Datum"
+theme = "hugo_theme_robust"
+
+# googleAnalytics = "UA-XXXXXXXX-XX" # Optional
+# disqusShortname = "XYW"
+
+[params]
+description = ""
+dateformat = "Jan 2, 2006" # Optional
+# Fonts settings.
+googlefonts = "https://fonts.googleapis.com/css?family=Lobster|Lato:400,700" # Optional, Include google fonts.
+fontfamily = "Lato,YuGothic,'Hiragino Kaku Gothic Pro',Meiryo,sans-serif" # Optional, Override body font family.
+logofontfamily = "Lobster, cursive" # Optional, Override logo font.
+favicon = "images/logo.png"
+
+enableHighlight = true # highlight.js option
+
+[params.author]
+thumbnail = "images/avatar/avatar_cutout_2.jpg"
+name = "Thom Miano"
+description = ""  # you can use <p></p> tags
+soundcloud = "https://soundcloud.com/yhorn"
+github = "https://github.com/thommiano"
+linkedin = "https://linkedin.com/in/tnmiano"
+twitter = "https://twitter.com/SocraticDatum"
+
+
+[outputs]
+page = [ "HTML", "AMP" ] # if you want AMP enable.

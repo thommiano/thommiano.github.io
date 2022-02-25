@@ -1,5 +1,5 @@
 baseurl = "https://example.com/"
-title = "Socratic Datum"
+title = "socratic.datum"
 theme = "hugo_theme_robust"
 
 # googleAnalytics = "UA-XXXXXXXX-XX" # Optional
@@ -12,7 +12,6 @@ dateformat = "Jan 2, 2006" # Optional
 googlefonts = "https://fonts.googleapis.com/css?family=Lobster|Lato:400,700" # Optional, Include google fonts.
 fontfamily = "Lato,YuGothic,'Hiragino Kaku Gothic Pro',Meiryo,sans-serif" # Optional, Override body font family.
 logofontfamily = "Lobster, cursive" # Optional, Override logo font.
-favicon = "images/logo.png"
 
 enableHighlight = true # highlight.js option
 

@@ -1,6 +1,7 @@
 ---
 title: "Music Composition"
 date: 2022-02-25T00:01:20-05:00
+showDate: false
 draft: false
 thumbnail: "images/music_composition/me_graphically.jpg"
 # toc: false

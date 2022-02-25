@@ -17,6 +17,7 @@ enableHighlight = true # highlight.js option
 
 [params.author]
 thumbnail = "images/avatar/avatar_cutout_2.jpg"
+about = "about"
 name = "Thom Miano"
 description = ""  # you can use <p></p> tags
 soundcloud = "https://soundcloud.com/yhorn"

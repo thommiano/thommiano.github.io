@@ -1,5 +1,5 @@
 ---
-title: "Generative Art"
+title: "art.generative"
 date: 2022-02-25T00:01:20-05:00
 showDate: false
 draft: false

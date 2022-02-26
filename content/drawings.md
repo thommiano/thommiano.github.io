@@ -1,5 +1,5 @@
 ---
-title: "Drawings"
+title: "art.drawings"
 date: 2022-02-25T00:01:20-05:00
 showDate: false
 draft: false

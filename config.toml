@@ -1,4 +1,4 @@
-baseurl = "https://thommiano.github.io"
+baseurl = "https://thommiano.github.io/"
 title = "socratic.datum"
 theme = "hugo_theme_robust"
 

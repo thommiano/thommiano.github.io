@@ -4,12 +4,12 @@ date: 2020-02-25T00:01:20-05:00
 showDate: false
 draft: false
 thumbnail: "images/communication_activity/presentation.jpg"
-summary: "Journal publications, conference presentations and posters, and articles."
+summary: "Journal publications, presentations, and articles."
 ---
 
 ## Journal Publications
 
-Dimartino, Lisa & Miano, Thomas & Wessell, Kathryn & Bohac, Buck & Hanson, Laura. (2021). Identification of Uncontrolled Symptoms in Cancer Patients Using Natural Language Processing. Journal of Pain and Symptom Management. 10.1016/j.jpainsymman.2021.10.014.
+DiMartino, Lisa & Miano, Thomas & Wessell, Kathryn & Bohac, Buck & Hanson, Laura. (2021). Identification of Uncontrolled Symptoms in Cancer Patients Using Natural Language Processing. Journal of Pain and Symptom Management. 10.1016/j.jpainsymman.2021.10.014.
 
 Chew, R., Rineer, J., Beach, R., O’Neil, M., Ujeneza, N., Lapidus, D., Miano, T., Hegarty-Craver, M., Polly, J., & Temple, D. (2020). Deep neural networks and transfer learning for food crop identification in UAV images. Drones, 4(1), 7.
 

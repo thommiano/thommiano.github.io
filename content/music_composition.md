@@ -4,7 +4,7 @@ date: 2022-02-25T00:01:20-05:00
 showDate: false
 draft: false
 thumbnail: "images/music_composition/me_graphically.jpg"
-summary: "A collection of music compositions. Best enjoyed with headphones!"
+summary: "Best enjoyed with headphones!"
 ---
 
 Best enjoyed with headphones.

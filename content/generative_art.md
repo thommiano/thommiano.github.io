@@ -4,7 +4,7 @@ date: 2022-02-25T00:01:20-05:00
 showDate: false
 draft: false
 thumbnail: "images/generative_art/memory_thumbnail.jpg"
-# toc: false
+summary: "A collection of procedurally generated art."
 ---
 
 Computer-generated art.

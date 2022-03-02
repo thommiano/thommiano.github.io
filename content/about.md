@@ -1,6 +1,6 @@
 ---
 title: "about"
-date: 2020-02-26T00:00:00-00:00
+date: 1988-02-26T00:00:00-00:00
 showDate: false
 draft: false
 thumbnail: "images/about/datum_loop.gif"

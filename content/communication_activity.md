@@ -4,6 +4,7 @@ date: 2020-02-25T00:01:20-05:00
 showDate: false
 draft: false
 thumbnail: "images/communication_activity/presentation.jpg"
+summary: "Journal publications, conference presentations and posters, and articles."
 ---
 
 ## Journal Publications

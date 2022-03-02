@@ -4,7 +4,7 @@ date: 2022-02-25T00:01:20-05:00
 showDate: false
 draft: false
 thumbnail: "images/drawings/figure_drawing/2015_002_thumbnail.jpg"
-# hidden: true
+summary: "A collection of figure drawings."
 ---
 
 ## figure drawings

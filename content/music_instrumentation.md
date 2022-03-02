@@ -4,7 +4,7 @@ date: 2022-02-25T00:01:20-05:00
 showDate: false
 draft: false
 thumbnail: "images/music_instrumentation/guitar.jpg"
-# toc: false
+summary: "Recordings from live jam sessions."
 ---
 
 ## Fray Ends - Brooklyn Jam

@@ -1127,14 +1127,14 @@
         if (!src) return;
 
         if (entry.isIntersecting) {
-          if (!obj.data || obj.data === '') {
-            obj.data = src;
+          if (obj.getAttribute('data') !== src) {
+            obj.setAttribute('data', src);
           }
         } else {
-          obj.data = '';
+          obj.removeAttribute('data');
         }
       });
-    }, { rootMargin: '300px' });
+    }, { rootMargin: '300px', threshold: 0 });
 
     // Observe all SVG objects with data-src
     document.querySelectorAll('object[data-src]').forEach(obj => {

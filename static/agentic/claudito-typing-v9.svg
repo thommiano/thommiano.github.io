@@ -1,0 +1,303 @@
+<!--
+  Prompt: "Yes, this is the eact dirction I was looking for! Can you give them more snappy tap movements, why leveraging the general movement that you've created?"
+
+  Added snappy tap movements with anticipation/strike/return phases.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="400" height="240">
+  <defs>
+    <linearGradient id="keyTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#666"/>
+      <stop offset="100%" style="stop-color:#444"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .body { fill: #dc7974; }
+    .keyboard-base { fill: #0a0a0a; }
+    .key-well { fill: #111; }
+    .key-cap { fill: url(#keyTop); }
+    .tentacle {
+      fill: none;
+      stroke: #dc7974;
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+  </style>
+
+  <!-- Keyboard base -->
+  <rect class="keyboard-base" x="25" y="72" width="150" height="42" rx="5"/>
+  <rect class="key-well" x="30" y="76" width="140" height="34" rx="2"/>
+
+  <!-- Keys -->
+  <rect class="key-cap" x="34" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="49" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="64" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="79" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="94" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="109" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="124" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="139" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="154" y="78" width="13" height="9" rx="2"/>
+
+  <rect class="key-cap" x="37" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="52" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="67" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="82" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="97" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="112" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="127" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="142" y="89" width="13" height="9" rx="2"/>
+
+  <rect class="key-cap" x="40" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="55" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="70" y="100" width="50" height="8" rx="2"/>
+  <rect class="key-cap" x="122" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="137" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="152" y="100" width="13" height="8" rx="2"/>
+
+  <!-- Tentacle legs -->
+  <path id="leg0" class="tentacle"/>
+  <path id="leg1" class="tentacle"/>
+  <path id="leg2" class="tentacle"/>
+  <path id="leg3" class="tentacle"/>
+
+  <!-- Claudito body -->
+  <g id="claudito" transform="translate(100, 18)">
+    <g class="body">
+      <rect x="-28" y="0" width="4" height="16"/>
+      <rect x="-24" y="0" width="8" height="8"/>
+      <rect x="-24" y="8" width="4" height="8"/>
+      <rect x="-16" y="0" width="24" height="16"/>
+      <rect x="8" y="0" width="8" height="8"/>
+      <rect x="12" y="8" width="4" height="8"/>
+      <rect x="16" y="0" width="4" height="16"/>
+    </g>
+
+    <g class="body">
+      <rect x="-36" y="16" width="4" height="8"/>
+      <rect x="-32" y="16" width="8" height="8"/>
+      <rect x="-28" y="24" width="4" height="8"/>
+      <rect x="-24" y="16" width="40" height="16"/>
+      <rect x="16" y="16" width="8" height="8"/>
+      <rect x="16" y="24" width="4" height="8"/>
+      <rect x="24" y="16" width="4" height="8"/>
+    </g>
+  </g>
+
+  <script type="text/javascript"><![CDATA[
+    class PerlinNoise {
+      constructor(seed = Math.random() * 10000) {
+        this.p = [];
+        for (let i = 0; i < 256; i++) this.p[i] = i;
+        let n = seed;
+        for (let i = 255; i > 0; i--) {
+          n = (n * 16807) % 2147483647;
+          const j = n % (i + 1);
+          [this.p[i], this.p[j]] = [this.p[j], this.p[i]];
+        }
+        this.p = this.p.concat(this.p);
+      }
+      fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+      lerp(a, b, t) { return a + t * (b - a); }
+      grad(hash, x) { return (hash & 1) === 0 ? x : -x; }
+      noise1D(x) {
+        const xi = Math.floor(x) & 255;
+        const xf = x - Math.floor(x);
+        const u = this.fade(xf);
+        return this.lerp(this.grad(this.p[xi], xf), this.grad(this.p[xi + 1], xf - 1), u);
+      }
+    }
+
+    // Tap animation curve: quick down, quick up with slight anticipation
+    // Returns { y: vertical offset, curl: curl modifier }
+    function tapCurve(progress) {
+      if (progress < 0.15) {
+        // Anticipation: slight pull up
+        const t = progress / 0.15;
+        return { y: -5 * Math.sin(t * Math.PI), curl: -0.3 * t };
+      } else if (progress < 0.4) {
+        // Strike down: fast jab
+        const t = (progress - 0.15) / 0.25;
+        const ease = t * t; // ease in
+        return { y: 18 * ease, curl: 0.5 * ease };
+      } else if (progress < 0.55) {
+        // Impact & slight bounce
+        const t = (progress - 0.4) / 0.15;
+        return { y: 18 - 4 * Math.sin(t * Math.PI), curl: 0.5 - 0.2 * t };
+      } else {
+        // Return: smooth ease out
+        const t = (progress - 0.55) / 0.45;
+        const ease = 1 - (1 - t) * (1 - t); // ease out
+        return { y: 18 * (1 - ease), curl: 0.3 * (1 - ease) };
+      }
+    }
+
+    const clauditoX = 100;
+    const clauditoY = 18;
+    const keyboardY = 85; // Target Y for taps
+
+    const tentacles = [
+      {
+        el: document.getElementById('leg0'),
+        anchorX: clauditoX - 18,
+        anchorY: clauditoY + 34,
+        restX: 55,
+        restY: 78,
+        noise: {
+          curl1: new PerlinNoise(1),
+          curl2: new PerlinNoise(11),
+          sway: new PerlinNoise(21),
+          tipX: new PerlinNoise(41),
+          tipY: new PerlinNoise(51),
+          tapTiming: new PerlinNoise(61)
+        },
+        phase: 0,
+        // Tap state
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.18,
+        lastTapTime: 0,
+        nextTapDelay: 0.3
+      },
+      {
+        el: document.getElementById('leg1'),
+        anchorX: clauditoX - 10,
+        anchorY: clauditoY + 34,
+        restX: 80,
+        restY: 80,
+        noise: {
+          curl1: new PerlinNoise(2),
+          curl2: new PerlinNoise(12),
+          sway: new PerlinNoise(22),
+          tipX: new PerlinNoise(42),
+          tipY: new PerlinNoise(52),
+          tapTiming: new PerlinNoise(62)
+        },
+        phase: 1.3,
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.15,
+        lastTapTime: 0.1,
+        nextTapDelay: 0.25
+      },
+      {
+        el: document.getElementById('leg2'),
+        anchorX: clauditoX + 10,
+        anchorY: clauditoY + 34,
+        restX: 120,
+        restY: 80,
+        noise: {
+          curl1: new PerlinNoise(3),
+          curl2: new PerlinNoise(13),
+          sway: new PerlinNoise(23),
+          tipX: new PerlinNoise(43),
+          tipY: new PerlinNoise(53),
+          tapTiming: new PerlinNoise(63)
+        },
+        phase: 2.7,
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.16,
+        lastTapTime: 0.2,
+        nextTapDelay: 0.28
+      },
+      {
+        el: document.getElementById('leg3'),
+        anchorX: clauditoX + 18,
+        anchorY: clauditoY + 34,
+        restX: 145,
+        restY: 78,
+        noise: {
+          curl1: new PerlinNoise(4),
+          curl2: new PerlinNoise(14),
+          sway: new PerlinNoise(24),
+          tipX: new PerlinNoise(44),
+          tipY: new PerlinNoise(54),
+          tapTiming: new PerlinNoise(64)
+        },
+        phase: 4.1,
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.17,
+        lastTapTime: 0.15,
+        nextTapDelay: 0.32
+      }
+    ];
+
+    let time = 0;
+    let lastTime = performance.now();
+
+    function animate(currentTime) {
+      const deltaTime = (currentTime - lastTime) / 1000;
+      lastTime = currentTime;
+      time += deltaTime;
+
+      tentacles.forEach(t => {
+        const p = t.phase;
+        const n = t.noise;
+
+        // Handle tap timing
+        if (!t.tapping) {
+          if (time - t.lastTapTime > t.nextTapDelay) {
+            // Start a new tap
+            t.tapping = true;
+            t.tapProgress = 0;
+            // Randomize next delay using noise
+            t.nextTapDelay = 0.15 + (n.tapTiming.noise1D(time + p) * 0.5 + 0.5) * 0.35;
+          }
+        } else {
+          // Progress the tap
+          t.tapProgress += deltaTime / t.tapDuration;
+          if (t.tapProgress >= 1) {
+            t.tapping = false;
+            t.tapProgress = 0;
+            t.lastTapTime = time;
+          }
+        }
+
+        // Get tap offset
+        const tap = t.tapping ? tapCurve(t.tapProgress) : { y: 0, curl: 0 };
+
+        // Base tip position - wanders around rest position (slower, more subtle)
+        const tipWanderX = n.tipX.noise1D(time * 0.5 + p) * 20;
+        const tipWanderY = n.tipY.noise1D(time * 0.6 + p) * 10;
+        const tipX = t.restX + tipWanderX;
+        const tipY = t.restY + tipWanderY + tap.y; // Add tap offset
+
+        // Calculate base direction vector
+        const dx = tipX - t.anchorX;
+        const dy = tipY - t.anchorY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        // Perpendicular vector for curl offset
+        const perpX = -dy / dist;
+        const perpY = dx / dist;
+
+        // Control points with organic curl + tap modifier
+        const baseCurl1 = n.curl1.noise1D(time * 1.2 + p) * 18;
+        const baseCurl2 = n.curl2.noise1D(time * 1.5 + p + 10) * 22;
+
+        // Tap adds extra curl (tentacle coils before striking)
+        const curl1 = baseCurl1 * (1 + tap.curl);
+        const curl2 = baseCurl2 * (1 + tap.curl * 0.7);
+
+        const sway1 = n.sway.noise1D(time * 0.6 + p) * 6;
+        const sway2 = n.sway.noise1D(time * 0.8 + p + 5) * 8;
+
+        const cp1x = t.anchorX + dx * 0.33 + perpX * curl1 + sway1;
+        const cp1y = t.anchorY + dy * 0.33 + perpY * curl1;
+
+        const cp2x = t.anchorX + dx * 0.66 + perpX * curl2 + sway2;
+        const cp2y = t.anchorY + dy * 0.66 + perpY * curl2;
+
+        // Build cubic bezier path
+        const path = `M ${t.anchorX} ${t.anchorY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${tipX} ${tipY}`;
+        t.el.setAttribute('d', path);
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  ]]></script>
+</svg>

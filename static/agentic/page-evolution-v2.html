@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Evolution v2: Context Section Added</title>
+  <style>
+    /* Color palette from kitty.conf */
+    :root {
+      --bg: #13161a;
+      --bg-light: #160301;
+      --bg-lighter: #1f0906;
+      --fg: #e9ae17;
+      --red: #b43c29;
+      --red-bright: #dc7974;
+      --green: #00c200;
+      --green-bright: #57e690;
+      --yellow: #c7c400;
+      --yellow-bright: #ece100;
+      --blue: #2743c7;
+      --blue-bright: #a6aaf1;
+      --magenta: #bf3fbd;
+      --cyan: #00c5c7;
+      --cyan-bright: #5ffdff;
+      --white: #c7c7c7;
+      --white-bright: #feffff;
+      --gray: #676767;
+      --black: #14191e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: Monaco, 'SF Mono', Menlo, monospace;
+      font-size: 14px;
+      background: var(--bg);
+      color: var(--fg);
+      margin: 0;
+      padding: 24px;
+    }
+    h1 {
+      text-align: center;
+      color: var(--blue-bright);
+      font-size: 28px;
+      margin-bottom: 36px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+    .sketch-card {
+      background: var(--bg-light);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      border: 1px solid var(--bg-lighter);
+    }
+    .sketch-card h2 {
+      margin: 0;
+      padding: 10px 14px;
+      background: var(--bg-light);
+      font-size: 16px;
+      color: var(--blue-bright);
+      border-bottom: 1px solid var(--white);
+    }
+    .sketch-preview {
+      background: var(--black);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 180px;
+      padding: 8px;
+    }
+    .sketch-preview object {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+    }
+    .annotation {
+      padding: 10px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      height: 160px;
+      overflow-y: auto;
+    }
+    .annotation .prompt {
+      background: var(--black);
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      color: var(--fg);
+      font-style: normal;
+      font-size: 13px;
+      position: relative;
+    }
+    .annotation .prompt::before {
+      content: ">";
+      color: var(--red-bright);
+      font-weight: bold;
+      margin-right: 8px;
+    }
+    .annotation .description {
+      color: var(--white);
+      padding-left: 4px;
+      font-size: 13px;
+    }
+    .meta {
+      font-size: 12px;
+      color: var(--gray);
+      text-align: right;
+      padding: 8px 14px;
+      border-top: 1px solid var(--bg-lighter);
+    }
+    .context {
+      max-width: 1600px;
+      margin: 0 auto 40px auto;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--white);
+    }
+    .context p {
+      margin: 0 0 16px 0;
+    }
+    .context p:last-child {
+      margin-bottom: 0;
+    }
+    .context strong {
+      color: var(--fg);
+    }
+    .context em {
+      color: var(--blue-bright);
+      font-style: normal;
+    }
+    .context .observation {
+      margin: 16px 0;
+    }
+    .context h2 {
+      color: var(--blue-bright);
+      font-size: 18px;
+      margin: 24px 0 16px 0;
+    }
+    .context h2:first-of-type {
+      margin-top: 0;
+    }
+    .authors {
+      text-align: center;
+      color: var(--fg);
+      font-size: 16px;
+      margin: -20px 0 36px 0;
+    }
+    .claudito-intro {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 16px;
+    }
+    .claudito-img {
+      max-width: 300px;
+      height: auto;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    .claudito-intro p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Iterative Design with an AI Agent: A Visual Case Study</h1>
+  <p class="authors">Socratic Datum & Claude</p>
+
+  <div class="context">
+    <p>This page documents an interactive design workflow between a human and an AI agent, using <strong>Claude Code with Opus 4.5</strong>. Incremental progress is shown between each card, where the prompt that led to that version is displayed below the animation, followed by a summary of what the agent did.</p>
+
+    <h2>Key Observations</h2>
+
+    <p>This exercise demonstrates several insights about collaborative workflows with AI agents:</p>
+
+    <div class="observation">
+      <p><strong>Constraints can limit creativity.</strong> In some cases, defining the specific method to use proved too restrictive and didn't result in the intended outcome or visual feeling. <em>(See Version 3: "vague idea on typing animation with perlin noise")</em></p>
+    </div>
+
+    <div class="observation">
+      <p><strong>Evocative language enables exploration.</strong> It often proved more productive to describe the intended feeling using varied vocabulary that could communicate the idea without over-specifying implementation. <em>(See Version 8: "look like an octopus... quadropus")</em></p>
+    </div>
+
+    <div class="observation">
+      <p><strong>Visual feedback bridges understanding.</strong> A powerful way to provide feedback was through screenshots, enabling the agent to see exactly what the human sees on the other side of the screen. <em>(See Version 17: "See the screenshot I took")</em></p>
+    </div>
+
+    <div class="observation">
+      <p><strong>Precise intent with flexible execution.</strong> Instructions that were simultaneously quite specific about the goal but somewhat vague about implementation were interpreted and executed accurately to the precise specification intended. <em>(See Version 22: spacebar and function row alignment)</em></p>
+    </div>
+
+    <h2>Agent Reflections</h2>
+
+    <p>From the agent's perspective, this workflow highlighted the value of <strong>iterative refinement over upfront perfection</strong>. Each version built on the last, with human feedback steering direction while preserving creative latitude. The shift from rectangular legs to organic bezier tentacles (v7-v8) emerged not from explicit technical instruction, but from understanding the desired <em>feeling</em>—"quadropus"—and translating that into appropriate techniques.</p>
+
+    <p>The data-driven approach in v20 (using a keyMap hash) exemplifies how a well-timed structural suggestion from the human—<em>"create a hash of all the keys"</em>—can unlock cleaner solutions. Sometimes the best contributions aren't about doing more, but about reframing the problem.</p>
+
+    <h2>Additional Context</h2>
+
+    <div class="claudito-intro">
+      <img src="claude-session-initialization-claudito.png" alt="Claudito in Claude Code session" class="claudito-img">
+      <p><strong>Claudito</strong> is the name we gave to the Claude avatar—a pixelated, four-legged character that serves as a visual representation of the AI assistant. The goal of this exercise was to animate Claudito typing on a keyboard.</p>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="sketch-card">
+      <h2>Version 1</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v1.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">let's try claudito typing on a keyboard</div>
+        <div class="description">Initial version with rectangular legs and basic keyboard layout.</div>
+      </div>
+      <div class="meta">claudito-typing-v1.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 2</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v2.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">The keys need to look more distinctive... leverage SVG for the actual legs typing on the keys</div>
+        <div class="description">Refined key styling and leg positioning.</div>
+      </div>
+      <div class="meta">claudito-typing-v2.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 3</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v3.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">The keys need to be more distinctive... vague idea on typing animation with perlin noise...</div>
+        <div class="description">Added 3D key gradients and exploring animation concepts.</div>
+      </div>
+      <div class="meta">claudito-typing-v3.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 4</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v4.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">The original four thin legs should be preserved. I'm imagining they have wave oscillations...</div>
+        <div class="description">Preserving thin legs with wave-based movement exploration.</div>
+      </div>
+      <div class="meta">claudito-typing-v4.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 5</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v5.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">The back of the legs should be more fixed to the body, and they should stretch out during their movement</div>
+        <div class="description">Fixed leg anchors at body, stretching motion.</div>
+      </div>
+      <div class="meta">claudito-typing-v5.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 6</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v6.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">The stretch range needs adjusting. It needs to be able to reach the keys...</div>
+        <div class="description">Adjusted stretch range to reach keyboard keys.</div>
+      </div>
+      <div class="meta">claudito-typing-v6.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 7</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v7.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">The origin of the legs connected to the base of the claudito should match the default position... Less cross-leg crossing...</div>
+        <div class="description">Leg origins match body position, reduced leg crossing.</div>
+      </div>
+      <div class="meta">claudito-typing-v7.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 8</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v8.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">Feel free to come up with a new typing algorithm... look like an octopus... quadropus</div>
+        <div class="description">Major shift to tentacle/bezier curve approach for organic movement.</div>
+      </div>
+      <div class="meta">claudito-typing-v8.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 9</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v9.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">Yes, this is the exact direction I was looking for! Can you give them more snappy tap movements...</div>
+        <div class="description">Added snappy tap movements with anticipation/strike/return phases.</div>
+      </div>
+      <div class="meta">claudito-typing-v9.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 10</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v10.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">Now, can you make the snap-to-key action so that they actually reach the different keys?</div>
+        <div class="description">Actual key targeting - legs reach specific key positions.</div>
+      </div>
+      <div class="meta">claudito-typing-v10.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 11</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v11.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">Can you make the snap motion slower so that we can actually see claudito reaching each key</div>
+        <div class="description">Slower tap duration (0.40-0.45s) for visible motion.</div>
+      </div>
+      <div class="meta">claudito-typing-v11.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 12</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v12.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">From the v11 style, make less delay between each type... typing itself should be more continuous... with occasional pauses</div>
+        <div class="description">More continuous typing with occasional pauses.</div>
+      </div>
+      <div class="meta">claudito-typing-v12.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 13</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v13.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">The keyboard should be flipped so the space bar is facing claudito</div>
+        <div class="description">Keyboard flipped - spacebar row closest to Claudito.</div>
+      </div>
+      <div class="meta">claudito-typing-v13.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 14</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v14.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">Let's try a version where the keyboard is scaled down so that it's as wide as claudito</div>
+        <div class="description">Keyboard scaled down to match Claudito's width.</div>
+      </div>
+      <div class="meta">claudito-typing-v14.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 15</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v15.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">Can you give the keyboard more of a 16:9 ratio and give it the full set of normal keys...</div>
+        <div class="description">Full keyboard layout with 16:9 ratio, 5 rows.</div>
+      </div>
+      <div class="meta">claudito-typing-v15.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 16</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v16.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">Can you scale the keyboard down to make it smaller</div>
+        <div class="description">Scaled down smaller keyboard.</div>
+      </div>
+      <div class="meta">claudito-typing-v16.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 17</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v17.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">See the screenshot I took. Can you make the key layout and ratio/proportions like this?</div>
+        <div class="description">TKL-style keyboard based on screenshot reference.</div>
+      </div>
+      <div class="meta">claudito-typing-v17.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 18</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v18.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">The keyboard looks off. I wonder if it's because we have the keyboard flipped toward the claudito?</div>
+        <div class="description">Normal keyboard orientation - function row at top, spacebar at bottom.</div>
+      </div>
+      <div class="meta">claudito-typing-v18.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 19</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v19.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">The arrows have three keys below them that shouldn't be there</div>
+        <div class="description">Fixed arrow keys - proper inverted-T shape with up arrow alone.</div>
+      </div>
+      <div class="meta">claudito-typing-v19.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 20</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v20.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">Take a look at the schematic... create a hash of all the keys shown in the screenshot, and then create a button for each one</div>
+        <div class="description">Data-driven keyMap approach with 87 keys generated from JavaScript object.</div>
+      </div>
+      <div class="meta">claudito-typing-v20.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 21</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v21.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">Looks like there's a bug where the keys are all squished on the left</div>
+        <div class="description">Fixed scale from 0.38 to 1.25 to fill keyboard width properly.</div>
+      </div>
+      <div class="meta">claudito-typing-v21.svg</div>
+    </div>
+    <div class="sketch-card">
+      <h2>Version 22</h2>
+      <div class="sketch-preview">
+        <object type="image/svg+xml" data="claudito-typing-v22.svg"></object>
+      </div>
+      <div class="annotation">
+        <div class="prompt">The space key needs to be bigger... the gaps in the key groups on the top row need to be increased...</div>
+        <div class="description">Final alignment fixes: wider spacebar, function row gaps aligned with nav cluster.</div>
+      </div>
+      <div class="meta">claudito-typing-v22.svg</div>
+    </div>
+  </div>
+</body>
+</html>

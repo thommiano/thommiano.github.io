@@ -1,0 +1,363 @@
+<!--
+  Prompt: "Can you make the snap motion slower so that we can actually see claudito reaching each key"
+
+  Slower tap duration (0.40-0.45s) for visible motion.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="400" height="240">
+  <defs>
+    <linearGradient id="keyTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#666"/>
+      <stop offset="100%" style="stop-color:#444"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .body { fill: #dc7974; }
+    .keyboard-base { fill: #0a0a0a; }
+    .key-well { fill: #111; }
+    .key-cap { fill: url(#keyTop); }
+    .tentacle {
+      fill: none;
+      stroke: #dc7974;
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+  </style>
+
+  <!-- Keyboard base -->
+  <rect class="keyboard-base" x="25" y="72" width="150" height="42" rx="5"/>
+  <rect class="key-well" x="30" y="76" width="140" height="34" rx="2"/>
+
+  <!-- Keys -->
+  <rect class="key-cap" x="34" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="49" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="64" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="79" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="94" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="109" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="124" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="139" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="154" y="78" width="13" height="9" rx="2"/>
+
+  <rect class="key-cap" x="37" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="52" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="67" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="82" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="97" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="112" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="127" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="142" y="89" width="13" height="9" rx="2"/>
+
+  <rect class="key-cap" x="40" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="55" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="70" y="100" width="50" height="8" rx="2"/>
+  <rect class="key-cap" x="122" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="137" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="152" y="100" width="13" height="8" rx="2"/>
+
+  <!-- Tentacle legs -->
+  <path id="leg0" class="tentacle"/>
+  <path id="leg1" class="tentacle"/>
+  <path id="leg2" class="tentacle"/>
+  <path id="leg3" class="tentacle"/>
+
+  <!-- Claudito body -->
+  <g id="claudito" transform="translate(100, 18)">
+    <g class="body">
+      <rect x="-28" y="0" width="4" height="16"/>
+      <rect x="-24" y="0" width="8" height="8"/>
+      <rect x="-24" y="8" width="4" height="8"/>
+      <rect x="-16" y="0" width="24" height="16"/>
+      <rect x="8" y="0" width="8" height="8"/>
+      <rect x="12" y="8" width="4" height="8"/>
+      <rect x="16" y="0" width="4" height="16"/>
+    </g>
+
+    <g class="body">
+      <rect x="-36" y="16" width="4" height="8"/>
+      <rect x="-32" y="16" width="8" height="8"/>
+      <rect x="-28" y="24" width="4" height="8"/>
+      <rect x="-24" y="16" width="40" height="16"/>
+      <rect x="16" y="16" width="8" height="8"/>
+      <rect x="16" y="24" width="4" height="8"/>
+      <rect x="24" y="16" width="4" height="8"/>
+    </g>
+  </g>
+
+  <script type="text/javascript"><![CDATA[
+    class PerlinNoise {
+      constructor(seed = Math.random() * 10000) {
+        this.p = [];
+        for (let i = 0; i < 256; i++) this.p[i] = i;
+        let n = seed;
+        for (let i = 255; i > 0; i--) {
+          n = (n * 16807) % 2147483647;
+          const j = n % (i + 1);
+          [this.p[i], this.p[j]] = [this.p[j], this.p[i]];
+        }
+        this.p = this.p.concat(this.p);
+      }
+      fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+      lerp(a, b, t) { return a + t * (b - a); }
+      grad(hash, x) { return (hash & 1) === 0 ? x : -x; }
+      noise1D(x) {
+        const xi = Math.floor(x) & 255;
+        const xf = x - Math.floor(x);
+        const u = this.fade(xf);
+        return this.lerp(this.grad(this.p[xi], xf), this.grad(this.p[xi + 1], xf - 1), u);
+      }
+    }
+
+    // Key positions (center of each key)
+    const allKeys = [
+      // Top row (y = 78 + 4.5 = 82.5 center, but we want surface = 78)
+      { x: 40.5, y: 78 }, { x: 55.5, y: 78 }, { x: 70.5, y: 78 }, { x: 85.5, y: 78 },
+      { x: 100.5, y: 78 }, { x: 115.5, y: 78 }, { x: 130.5, y: 78 }, { x: 145.5, y: 78 }, { x: 160.5, y: 78 },
+      // Middle row
+      { x: 43.5, y: 89 }, { x: 58.5, y: 89 }, { x: 73.5, y: 89 }, { x: 88.5, y: 89 },
+      { x: 103.5, y: 89 }, { x: 118.5, y: 89 }, { x: 133.5, y: 89 }, { x: 148.5, y: 89 },
+      // Bottom row
+      { x: 46.5, y: 100 }, { x: 61.5, y: 100 }, { x: 95, y: 100 },
+      { x: 128.5, y: 100 }, { x: 143.5, y: 100 }, { x: 158.5, y: 100 }
+    ];
+
+    // Keys grouped by region for each tentacle
+    const keyRegions = [
+      // Leg 0: far left
+      allKeys.filter(k => k.x < 72),
+      // Leg 1: left-center
+      allKeys.filter(k => k.x >= 50 && k.x < 105),
+      // Leg 2: right-center
+      allKeys.filter(k => k.x >= 95 && k.x < 150),
+      // Leg 3: far right
+      allKeys.filter(k => k.x >= 128)
+    ];
+
+    // Tap animation curve
+    function tapCurve(progress) {
+      if (progress < 0.12) {
+        // Anticipation: pull back
+        const t = progress / 0.12;
+        return { reach: -0.15 * Math.sin(t * Math.PI), curl: -0.3 * t };
+      } else if (progress < 0.35) {
+        // Strike: fast move to key
+        const t = (progress - 0.12) / 0.23;
+        const ease = t * t;
+        return { reach: ease, curl: 0.4 * ease };
+      } else if (progress < 0.5) {
+        // Impact hold
+        const t = (progress - 0.35) / 0.15;
+        return { reach: 1.0, curl: 0.4 - 0.1 * Math.sin(t * Math.PI) };
+      } else {
+        // Return
+        const t = (progress - 0.5) / 0.5;
+        const ease = 1 - (1 - t) * (1 - t);
+        return { reach: 1 - ease, curl: 0.3 * (1 - ease) };
+      }
+    }
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    const clauditoX = 100;
+    const clauditoY = 18;
+
+    const tentacles = [
+      {
+        el: document.getElementById('leg0'),
+        anchorX: clauditoX - 18,
+        anchorY: clauditoY + 34,
+        // Hover position (above keys)
+        hoverX: 52,
+        hoverY: 65,
+        keys: keyRegions[0],
+        noise: {
+          curl1: new PerlinNoise(1),
+          curl2: new PerlinNoise(11),
+          sway: new PerlinNoise(21),
+          hover: new PerlinNoise(31),
+          keySelect: new PerlinNoise(41)
+        },
+        phase: 0,
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.45,
+        lastTapTime: 0,
+        nextTapDelay: 0.55,
+        targetKey: null,
+        preTapX: 0,
+        preTapY: 0
+      },
+      {
+        el: document.getElementById('leg1'),
+        anchorX: clauditoX - 10,
+        anchorY: clauditoY + 34,
+        hoverX: 78,
+        hoverY: 68,
+        keys: keyRegions[1],
+        noise: {
+          curl1: new PerlinNoise(2),
+          curl2: new PerlinNoise(12),
+          sway: new PerlinNoise(22),
+          hover: new PerlinNoise(32),
+          keySelect: new PerlinNoise(42)
+        },
+        phase: 1.3,
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.40,
+        lastTapTime: 0.1,
+        nextTapDelay: 0.50,
+        targetKey: null,
+        preTapX: 0,
+        preTapY: 0
+      },
+      {
+        el: document.getElementById('leg2'),
+        anchorX: clauditoX + 10,
+        anchorY: clauditoY + 34,
+        hoverX: 122,
+        hoverY: 68,
+        keys: keyRegions[2],
+        noise: {
+          curl1: new PerlinNoise(3),
+          curl2: new PerlinNoise(13),
+          sway: new PerlinNoise(23),
+          hover: new PerlinNoise(33),
+          keySelect: new PerlinNoise(43)
+        },
+        phase: 2.7,
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.42,
+        lastTapTime: 0.2,
+        nextTapDelay: 0.52,
+        targetKey: null,
+        preTapX: 0,
+        preTapY: 0
+      },
+      {
+        el: document.getElementById('leg3'),
+        anchorX: clauditoX + 18,
+        anchorY: clauditoY + 34,
+        hoverX: 148,
+        hoverY: 65,
+        keys: keyRegions[3],
+        noise: {
+          curl1: new PerlinNoise(4),
+          curl2: new PerlinNoise(14),
+          sway: new PerlinNoise(24),
+          hover: new PerlinNoise(34),
+          keySelect: new PerlinNoise(44)
+        },
+        phase: 4.1,
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.44,
+        lastTapTime: 0.15,
+        nextTapDelay: 0.58,
+        targetKey: null,
+        preTapX: 0,
+        preTapY: 0
+      }
+    ];
+
+    let time = 0;
+    let lastTime = performance.now();
+
+    function animate(currentTime) {
+      const deltaTime = (currentTime - lastTime) / 1000;
+      lastTime = currentTime;
+      time += deltaTime;
+
+      tentacles.forEach(t => {
+        const p = t.phase;
+        const n = t.noise;
+
+        // Hover movement (when not tapping)
+        const hoverOffsetX = n.hover.noise1D(time * 0.4 + p) * 15;
+        const hoverOffsetY = n.hover.noise1D(time * 0.5 + p + 100) * 8;
+
+        // Handle tap timing
+        if (!t.tapping) {
+          if (time - t.lastTapTime > t.nextTapDelay) {
+            // Start a new tap - select target key
+            const keyNoise = n.keySelect.noise1D(time * 2 + p);
+            const keyIndex = Math.floor((keyNoise * 0.5 + 0.5) * t.keys.length);
+            t.targetKey = t.keys[Math.min(keyIndex, t.keys.length - 1)];
+
+            // Store pre-tap position
+            t.preTapX = t.hoverX + hoverOffsetX;
+            t.preTapY = t.hoverY + hoverOffsetY;
+
+            t.tapping = true;
+            t.tapProgress = 0;
+            t.nextTapDelay = 0.35 + (n.keySelect.noise1D(time + p + 50) * 0.5 + 0.5) * 0.4;
+          }
+        } else {
+          t.tapProgress += deltaTime / t.tapDuration;
+          if (t.tapProgress >= 1) {
+            t.tapping = false;
+            t.tapProgress = 0;
+            t.lastTapTime = time;
+          }
+        }
+
+        // Calculate tip position
+        let tipX, tipY;
+
+        if (t.tapping && t.targetKey) {
+          const tap = tapCurve(t.tapProgress);
+
+          // Interpolate from pre-tap position to target key
+          tipX = lerp(t.preTapX, t.targetKey.x, tap.reach);
+          tipY = lerp(t.preTapY, t.targetKey.y, tap.reach);
+
+          // During anticipation, pull back slightly
+          if (tap.reach < 0) {
+            tipY += tap.reach * 10; // Pull up
+          }
+        } else {
+          // Hovering
+          tipX = t.hoverX + hoverOffsetX;
+          tipY = t.hoverY + hoverOffsetY;
+        }
+
+        // Calculate bezier curve
+        const dx = tipX - t.anchorX;
+        const dy = tipY - t.anchorY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        const perpX = -dy / dist;
+        const perpY = dx / dist;
+
+        // Get tap curl modifier
+        const tapCurl = t.tapping ? tapCurve(t.tapProgress).curl : 0;
+
+        // Organic curl with tap modifier
+        const baseCurl1 = n.curl1.noise1D(time * 1.0 + p) * 16;
+        const baseCurl2 = n.curl2.noise1D(time * 1.3 + p + 10) * 20;
+
+        const curl1 = baseCurl1 * (1 + tapCurl);
+        const curl2 = baseCurl2 * (1 + tapCurl * 0.6);
+
+        const sway1 = n.sway.noise1D(time * 0.5 + p) * 5;
+        const sway2 = n.sway.noise1D(time * 0.7 + p + 5) * 7;
+
+        const cp1x = t.anchorX + dx * 0.33 + perpX * curl1 + sway1;
+        const cp1y = t.anchorY + dy * 0.33 + perpY * curl1;
+
+        const cp2x = t.anchorX + dx * 0.66 + perpX * curl2 + sway2;
+        const cp2y = t.anchorY + dy * 0.66 + perpY * curl2;
+
+        const path = `M ${t.anchorX} ${t.anchorY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${tipX} ${tipY}`;
+        t.el.setAttribute('d', path);
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  ]]></script>
+</svg>

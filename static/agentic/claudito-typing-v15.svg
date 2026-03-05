@@ -1,0 +1,407 @@
+<!--
+  Prompt: "Can you give the keyboard more of a 16:9 ratio and give it the full set of normal keys on the keyboard (where numbers are above the letters)"
+
+  Full keyboard layout with 16:9 ratio, 5 rows including number row.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="400" height="240">
+  <defs>
+    <linearGradient id="keyTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#666"/>
+      <stop offset="100%" style="stop-color:#444"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .body { fill: #dc7974; }
+    .keyboard-base { fill: #0a0a0a; }
+    .key-well { fill: #111; }
+    .key-cap { fill: url(#keyTop); }
+    .tentacle {
+      fill: none;
+      stroke: #dc7974;
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+  </style>
+
+  <!-- Keyboard base - 16:9 ratio, full layout -->
+  <rect class="keyboard-base" x="52" y="58" width="96" height="54" rx="3"/>
+  <rect class="key-well" x="54" y="60" width="92" height="50" rx="2"/>
+
+  <!-- Keys - full keyboard, flipped (spacebar closest to Claudito) -->
+  <!-- Row 1: Spacebar row - y=62, closest -->
+  <rect class="key-cap" x="56" y="62" width="8" height="6" rx="1"/>
+  <rect class="key-cap" x="66" y="62" width="8" height="6" rx="1"/>
+  <rect class="key-cap" x="76" y="62" width="48" height="6" rx="1"/>
+  <rect class="key-cap" x="126" y="62" width="8" height="6" rx="1"/>
+  <rect class="key-cap" x="136" y="62" width="8" height="6" rx="1"/>
+
+  <!-- Row 2: ZXCV row - y=70 -->
+  <rect class="key-cap" x="56" y="70" width="10" height="6" rx="1"/>
+  <rect class="key-cap" x="68" y="70" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="76" y="70" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="84" y="70" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="92" y="70" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="100" y="70" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="108" y="70" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="116" y="70" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="124" y="70" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="132" y="70" width="12" height="6" rx="1"/>
+
+  <!-- Row 3: ASDF row - y=78 -->
+  <rect class="key-cap" x="56" y="78" width="11" height="6" rx="1"/>
+  <rect class="key-cap" x="69" y="78" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="77" y="78" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="85" y="78" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="93" y="78" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="101" y="78" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="109" y="78" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="117" y="78" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="125" y="78" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="133" y="78" width="11" height="6" rx="1"/>
+
+  <!-- Row 4: QWERTY row - y=86 -->
+  <rect class="key-cap" x="56" y="86" width="8" height="6" rx="1"/>
+  <rect class="key-cap" x="66" y="86" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="74" y="86" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="82" y="86" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="90" y="86" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="98" y="86" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="106" y="86" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="114" y="86" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="122" y="86" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="130" y="86" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="138" y="86" width="6" height="6" rx="1"/>
+
+  <!-- Row 5: Number row - y=94, furthest -->
+  <rect class="key-cap" x="56" y="94" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="64" y="94" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="72" y="94" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="80" y="94" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="88" y="94" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="96" y="94" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="104" y="94" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="112" y="94" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="120" y="94" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="128" y="94" width="6" height="6" rx="1"/>
+  <rect class="key-cap" x="136" y="94" width="8" height="6" rx="1"/>
+
+  <!-- Tentacle legs -->
+  <path id="leg0" class="tentacle"/>
+  <path id="leg1" class="tentacle"/>
+  <path id="leg2" class="tentacle"/>
+  <path id="leg3" class="tentacle"/>
+
+  <!-- Claudito body -->
+  <g id="claudito" transform="translate(100, 18)">
+    <g class="body">
+      <rect x="-28" y="0" width="4" height="16"/>
+      <rect x="-24" y="0" width="8" height="8"/>
+      <rect x="-24" y="8" width="4" height="8"/>
+      <rect x="-16" y="0" width="24" height="16"/>
+      <rect x="8" y="0" width="8" height="8"/>
+      <rect x="12" y="8" width="4" height="8"/>
+      <rect x="16" y="0" width="4" height="16"/>
+    </g>
+
+    <g class="body">
+      <rect x="-36" y="16" width="4" height="8"/>
+      <rect x="-32" y="16" width="8" height="8"/>
+      <rect x="-28" y="24" width="4" height="8"/>
+      <rect x="-24" y="16" width="40" height="16"/>
+      <rect x="16" y="16" width="8" height="8"/>
+      <rect x="16" y="24" width="4" height="8"/>
+      <rect x="24" y="16" width="4" height="8"/>
+    </g>
+  </g>
+
+  <script type="text/javascript"><![CDATA[
+    class PerlinNoise {
+      constructor(seed = Math.random() * 10000) {
+        this.p = [];
+        for (let i = 0; i < 256; i++) this.p[i] = i;
+        let n = seed;
+        for (let i = 255; i > 0; i--) {
+          n = (n * 16807) % 2147483647;
+          const j = n % (i + 1);
+          [this.p[i], this.p[j]] = [this.p[j], this.p[i]];
+        }
+        this.p = this.p.concat(this.p);
+      }
+      fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+      lerp(a, b, t) { return a + t * (b - a); }
+      grad(hash, x) { return (hash & 1) === 0 ? x : -x; }
+      noise1D(x) {
+        const xi = Math.floor(x) & 255;
+        const xf = x - Math.floor(x);
+        const u = this.fade(xf);
+        return this.lerp(this.grad(this.p[xi], xf), this.grad(this.p[xi + 1], xf - 1), u);
+      }
+    }
+
+    // Key positions (center of each key) - full keyboard, 16:9 ratio
+    const allKeys = [
+      // Row 1: Spacebar row - y=65, closest
+      { x: 60, y: 65 }, { x: 70, y: 65 }, { x: 100, y: 65 }, { x: 130, y: 65 }, { x: 140, y: 65 },
+      // Row 2: ZXCV row - y=73
+      { x: 61, y: 73 }, { x: 71, y: 73 }, { x: 79, y: 73 }, { x: 87, y: 73 }, { x: 95, y: 73 },
+      { x: 103, y: 73 }, { x: 111, y: 73 }, { x: 119, y: 73 }, { x: 127, y: 73 }, { x: 138, y: 73 },
+      // Row 3: ASDF row - y=81
+      { x: 61.5, y: 81 }, { x: 72, y: 81 }, { x: 80, y: 81 }, { x: 88, y: 81 }, { x: 96, y: 81 },
+      { x: 104, y: 81 }, { x: 112, y: 81 }, { x: 120, y: 81 }, { x: 128, y: 81 }, { x: 138.5, y: 81 },
+      // Row 4: QWERTY row - y=89
+      { x: 60, y: 89 }, { x: 69, y: 89 }, { x: 77, y: 89 }, { x: 85, y: 89 }, { x: 93, y: 89 },
+      { x: 101, y: 89 }, { x: 109, y: 89 }, { x: 117, y: 89 }, { x: 125, y: 89 }, { x: 133, y: 89 }, { x: 141, y: 89 },
+      // Row 5: Number row - y=97, furthest
+      { x: 59, y: 97 }, { x: 67, y: 97 }, { x: 75, y: 97 }, { x: 83, y: 97 }, { x: 91, y: 97 },
+      { x: 99, y: 97 }, { x: 107, y: 97 }, { x: 115, y: 97 }, { x: 123, y: 97 }, { x: 131, y: 97 }, { x: 140, y: 97 }
+    ];
+
+    // Keys grouped by region for each tentacle - full keyboard
+    const keyRegions = [
+      // Leg 0: left side
+      allKeys.filter(k => k.x < 85),
+      // Leg 1: left-center
+      allKeys.filter(k => k.x >= 70 && k.x < 105),
+      // Leg 2: right-center
+      allKeys.filter(k => k.x >= 95 && k.x < 130),
+      // Leg 3: right side
+      allKeys.filter(k => k.x >= 115)
+    ];
+
+    // Tap animation curve
+    function tapCurve(progress) {
+      if (progress < 0.12) {
+        // Anticipation: pull back
+        const t = progress / 0.12;
+        return { reach: -0.15 * Math.sin(t * Math.PI), curl: -0.3 * t };
+      } else if (progress < 0.35) {
+        // Strike: fast move to key
+        const t = (progress - 0.12) / 0.23;
+        const ease = t * t;
+        return { reach: ease, curl: 0.4 * ease };
+      } else if (progress < 0.5) {
+        // Impact hold
+        const t = (progress - 0.35) / 0.15;
+        return { reach: 1.0, curl: 0.4 - 0.1 * Math.sin(t * Math.PI) };
+      } else {
+        // Return
+        const t = (progress - 0.5) / 0.5;
+        const ease = 1 - (1 - t) * (1 - t);
+        return { reach: 1 - ease, curl: 0.3 * (1 - ease) };
+      }
+    }
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    const clauditoX = 100;
+    const clauditoY = 18;
+
+    const tentacles = [
+      {
+        el: document.getElementById('leg0'),
+        anchorX: clauditoX - 18,
+        anchorY: clauditoY + 34,
+        // Hover position (above keys)
+        hoverX: 70,
+        hoverY: 55,
+        keys: keyRegions[0],
+        noise: {
+          curl1: new PerlinNoise(1),
+          curl2: new PerlinNoise(11),
+          sway: new PerlinNoise(21),
+          hover: new PerlinNoise(31),
+          keySelect: new PerlinNoise(41)
+        },
+        phase: 0,
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.45,
+        lastTapTime: 0,
+        nextTapDelay: 0.08,
+        targetKey: null,
+        preTapX: 0,
+        preTapY: 0
+      },
+      {
+        el: document.getElementById('leg1'),
+        anchorX: clauditoX - 10,
+        anchorY: clauditoY + 34,
+        hoverX: 85,
+        hoverY: 55,
+        keys: keyRegions[1],
+        noise: {
+          curl1: new PerlinNoise(2),
+          curl2: new PerlinNoise(12),
+          sway: new PerlinNoise(22),
+          hover: new PerlinNoise(32),
+          keySelect: new PerlinNoise(42)
+        },
+        phase: 1.3,
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.40,
+        lastTapTime: 0.12,
+        nextTapDelay: 0.06,
+        targetKey: null,
+        preTapX: 0,
+        preTapY: 0
+      },
+      {
+        el: document.getElementById('leg2'),
+        anchorX: clauditoX + 10,
+        anchorY: clauditoY + 34,
+        hoverX: 115,
+        hoverY: 55,
+        keys: keyRegions[2],
+        noise: {
+          curl1: new PerlinNoise(3),
+          curl2: new PerlinNoise(13),
+          sway: new PerlinNoise(23),
+          hover: new PerlinNoise(33),
+          keySelect: new PerlinNoise(43)
+        },
+        phase: 2.7,
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.42,
+        lastTapTime: 0.18,
+        nextTapDelay: 0.07,
+        targetKey: null,
+        preTapX: 0,
+        preTapY: 0
+      },
+      {
+        el: document.getElementById('leg3'),
+        anchorX: clauditoX + 18,
+        anchorY: clauditoY + 34,
+        hoverX: 130,
+        hoverY: 55,
+        keys: keyRegions[3],
+        noise: {
+          curl1: new PerlinNoise(4),
+          curl2: new PerlinNoise(14),
+          sway: new PerlinNoise(24),
+          hover: new PerlinNoise(34),
+          keySelect: new PerlinNoise(44)
+        },
+        phase: 4.1,
+        tapping: false,
+        tapProgress: 0,
+        tapDuration: 0.44,
+        lastTapTime: 0.25,
+        nextTapDelay: 0.09,
+        targetKey: null,
+        preTapX: 0,
+        preTapY: 0
+      }
+    ];
+
+    let time = 0;
+    let lastTime = performance.now();
+
+    function animate(currentTime) {
+      const deltaTime = (currentTime - lastTime) / 1000;
+      lastTime = currentTime;
+      time += deltaTime;
+
+      tentacles.forEach(t => {
+        const p = t.phase;
+        const n = t.noise;
+
+        // Hover movement (when not tapping)
+        const hoverOffsetX = n.hover.noise1D(time * 0.4 + p) * 15;
+        const hoverOffsetY = n.hover.noise1D(time * 0.5 + p + 100) * 8;
+
+        // Handle tap timing
+        if (!t.tapping) {
+          if (time - t.lastTapTime > t.nextTapDelay) {
+            // Start a new tap - select target key
+            const keyNoise = n.keySelect.noise1D(time * 2 + p);
+            const keyIndex = Math.floor((keyNoise * 0.5 + 0.5) * t.keys.length);
+            t.targetKey = t.keys[Math.min(keyIndex, t.keys.length - 1)];
+
+            // Store pre-tap position
+            t.preTapX = t.hoverX + hoverOffsetX;
+            t.preTapY = t.hoverY + hoverOffsetY;
+
+            t.tapping = true;
+            t.tapProgress = 0;
+            // Mostly continuous typing with occasional pauses
+            const pauseChance = n.keySelect.noise1D(time * 0.3 + p + 50);
+            if (pauseChance > 0.7) {
+              // Occasional pause (thinking moment)
+              t.nextTapDelay = 0.4 + (pauseChance - 0.7) * 2.0;
+            } else {
+              // Continuous typing - very short delay
+              t.nextTapDelay = 0.02 + Math.random() * 0.08;
+            }
+          }
+        } else {
+          t.tapProgress += deltaTime / t.tapDuration;
+          if (t.tapProgress >= 1) {
+            t.tapping = false;
+            t.tapProgress = 0;
+            t.lastTapTime = time;
+          }
+        }
+
+        // Calculate tip position
+        let tipX, tipY;
+
+        if (t.tapping && t.targetKey) {
+          const tap = tapCurve(t.tapProgress);
+
+          // Interpolate from pre-tap position to target key
+          tipX = lerp(t.preTapX, t.targetKey.x, tap.reach);
+          tipY = lerp(t.preTapY, t.targetKey.y, tap.reach);
+
+          // During anticipation, pull back slightly
+          if (tap.reach < 0) {
+            tipY += tap.reach * 10; // Pull up
+          }
+        } else {
+          // Hovering
+          tipX = t.hoverX + hoverOffsetX;
+          tipY = t.hoverY + hoverOffsetY;
+        }
+
+        // Calculate bezier curve
+        const dx = tipX - t.anchorX;
+        const dy = tipY - t.anchorY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        const perpX = -dy / dist;
+        const perpY = dx / dist;
+
+        // Get tap curl modifier
+        const tapCurl = t.tapping ? tapCurve(t.tapProgress).curl : 0;
+
+        // Organic curl with tap modifier
+        const baseCurl1 = n.curl1.noise1D(time * 1.0 + p) * 16;
+        const baseCurl2 = n.curl2.noise1D(time * 1.3 + p + 10) * 20;
+
+        const curl1 = baseCurl1 * (1 + tapCurl);
+        const curl2 = baseCurl2 * (1 + tapCurl * 0.6);
+
+        const sway1 = n.sway.noise1D(time * 0.5 + p) * 5;
+        const sway2 = n.sway.noise1D(time * 0.7 + p + 5) * 7;
+
+        const cp1x = t.anchorX + dx * 0.33 + perpX * curl1 + sway1;
+        const cp1y = t.anchorY + dy * 0.33 + perpY * curl1;
+
+        const cp2x = t.anchorX + dx * 0.66 + perpX * curl2 + sway2;
+        const cp2y = t.anchorY + dy * 0.66 + perpY * curl2;
+
+        const path = `M ${t.anchorX} ${t.anchorY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${tipX} ${tipY}`;
+        t.el.setAttribute('d', path);
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  ]]></script>
+</svg>

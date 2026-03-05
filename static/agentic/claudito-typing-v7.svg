@@ -1,0 +1,263 @@
+<!--
+  Prompt: "The origin of the legs connected to the base of the claudito should match the default position of the legs. The left cluster of legs should stay on the left side more and the right cluster of legs should stay on the right more. Less cross-leg crossing of legs in other clusters, except for inner legs"
+
+  Leg origins match body position. Left/right leg clusters stay on their respective sides.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="400" height="240">
+  <defs>
+    <linearGradient id="keyTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#666"/>
+      <stop offset="100%" style="stop-color:#444"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .body { fill: #dc7974; }
+    .keyboard-base { fill: #0a0a0a; }
+    .key-well { fill: #111; }
+    .key-cap { fill: url(#keyTop); }
+  </style>
+
+  <!-- Keyboard base -->
+  <rect class="keyboard-base" x="25" y="72" width="150" height="42" rx="5"/>
+  <rect class="key-well" x="30" y="76" width="140" height="34" rx="2"/>
+
+  <!-- Keys -->
+  <rect class="key-cap" x="34" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="49" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="64" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="79" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="94" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="109" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="124" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="139" y="78" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="154" y="78" width="13" height="9" rx="2"/>
+
+  <rect class="key-cap" x="37" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="52" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="67" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="82" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="97" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="112" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="127" y="89" width="13" height="9" rx="2"/>
+  <rect class="key-cap" x="142" y="89" width="13" height="9" rx="2"/>
+
+  <rect class="key-cap" x="40" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="55" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="70" y="100" width="50" height="8" rx="2"/>
+  <rect class="key-cap" x="122" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="137" y="100" width="13" height="8" rx="2"/>
+  <rect class="key-cap" x="152" y="100" width="13" height="8" rx="2"/>
+
+  <!-- Claudito body -->
+  <g id="claudito" transform="translate(100, 18)">
+    <!-- Head: ▐▛███▜▌ -->
+    <g class="body">
+      <rect x="-28" y="0" width="4" height="16"/>
+      <rect x="-24" y="0" width="8" height="8"/>
+      <rect x="-24" y="8" width="4" height="8"/>
+      <rect x="-16" y="0" width="24" height="16"/>
+      <rect x="8" y="0" width="8" height="8"/>
+      <rect x="12" y="8" width="4" height="8"/>
+      <rect x="16" y="0" width="4" height="16"/>
+    </g>
+
+    <!-- Torso: ▝▜█████▛▘ -->
+    <g class="body">
+      <rect x="-36" y="16" width="4" height="8"/>
+      <rect x="-32" y="16" width="8" height="8"/>
+      <rect x="-28" y="24" width="4" height="8"/>
+      <rect x="-24" y="16" width="40" height="16"/>
+      <rect x="16" y="16" width="8" height="8"/>
+      <rect x="16" y="24" width="4" height="8"/>
+      <rect x="24" y="16" width="4" height="8"/>
+    </g>
+
+    <!-- Legs: ▘▘ ▝▝ pattern
+         Original positions in 9-cell grid (cellWidth=8, startX=-36):
+         - Col 2: ▘ left outer  -> x = -36 + 2*8 = -20 (upper-left quadrant, so x=-20, w=4)
+         - Col 3: ▘ left inner  -> x = -36 + 3*8 = -12 (upper-left quadrant, so x=-12, w=4)
+         - Col 4: space
+         - Col 5: ▝ right inner -> x = -36 + 5*8 = 4 (upper-right quadrant, so x=4+4=8, w=4)
+         - Col 6: ▝ right outer -> x = -36 + 6*8 = 12 (upper-right quadrant, so x=12+4=16, w=4)
+    -->
+    <rect id="leg0" class="body" x="-20" y="32" width="4" height="20"/>
+    <rect id="leg1" class="body" x="-12" y="32" width="4" height="20"/>
+    <rect id="leg2" class="body" x="8" y="32" width="4" height="20"/>
+    <rect id="leg3" class="body" x="16" y="32" width="4" height="20"/>
+  </g>
+
+  <script type="text/javascript"><![CDATA[
+    class PerlinNoise {
+      constructor(seed = Math.random() * 10000) {
+        this.p = [];
+        for (let i = 0; i < 256; i++) this.p[i] = i;
+        let n = seed;
+        for (let i = 255; i > 0; i--) {
+          n = (n * 16807) % 2147483647;
+          const j = n % (i + 1);
+          [this.p[i], this.p[j]] = [this.p[j], this.p[i]];
+        }
+        this.p = this.p.concat(this.p);
+      }
+      fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+      lerp(a, b, t) { return a + t * (b - a); }
+      grad(hash, x) { return (hash & 1) === 0 ? x : -x; }
+      noise1D(x) {
+        const xi = Math.floor(x) & 255;
+        const xf = x - Math.floor(x);
+        const u = this.fade(xf);
+        return this.lerp(this.grad(this.p[xi], xf), this.grad(this.p[xi + 1], xf - 1), u);
+      }
+    }
+
+    // Key positions grouped by region
+    const keysLeft = [
+      { x: 40.5, y: 78 }, { x: 55.5, y: 78 },
+      { x: 43.5, y: 89 }, { x: 58.5, y: 89 },
+      { x: 46.5, y: 100 }, { x: 61.5, y: 100 }
+    ];
+
+    const keysLeftCenter = [
+      { x: 55.5, y: 78 }, { x: 70.5, y: 78 }, { x: 85.5, y: 78 },
+      { x: 58.5, y: 89 }, { x: 73.5, y: 89 }, { x: 88.5, y: 89 },
+      { x: 61.5, y: 100 }, { x: 80, y: 100 }  // left side of spacebar
+    ];
+
+    const keysRightCenter = [
+      { x: 100.5, y: 78 }, { x: 115.5, y: 78 }, { x: 130.5, y: 78 },
+      { x: 103.5, y: 89 }, { x: 118.5, y: 89 }, { x: 133.5, y: 89 },
+      { x: 110, y: 100 }, { x: 128.5, y: 100 }  // right side of spacebar
+    ];
+
+    const keysRight = [
+      { x: 130.5, y: 78 }, { x: 145.5, y: 78 }, { x: 160.5, y: 78 },
+      { x: 133.5, y: 89 }, { x: 148.5, y: 89 },
+      { x: 143.5, y: 100 }, { x: 158.5, y: 100 }
+    ];
+
+    const clauditoX = 100;
+    const clauditoY = 18;
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    const legs = [
+      {
+        el: document.getElementById('leg0'),
+        noise: new PerlinNoise(1),
+        anchorX: -20,  // matches ▘ at col 2
+        anchorY: 32,
+        width: 4,
+        targetKeys: keysLeft,  // left outer - stays on left side
+        phase: 0,
+        currentX: 50,
+        currentY: 85,
+        targetX: 50,
+        targetY: 85,
+        lastSwitchTime: 0,
+        switchInterval: 0.3,
+        transitionSpeed: 12
+      },
+      {
+        el: document.getElementById('leg1'),
+        noise: new PerlinNoise(2),
+        anchorX: -12,  // matches ▘ at col 3
+        anchorY: 32,
+        width: 4,
+        targetKeys: keysLeftCenter,  // left inner - can reach toward center
+        phase: 0.7,
+        currentX: 75,
+        currentY: 85,
+        targetX: 75,
+        targetY: 85,
+        lastSwitchTime: 0,
+        switchInterval: 0.25,
+        transitionSpeed: 14
+      },
+      {
+        el: document.getElementById('leg2'),
+        noise: new PerlinNoise(3),
+        anchorX: 8,  // matches ▝ at col 5
+        anchorY: 32,
+        width: 4,
+        targetKeys: keysRightCenter,  // right inner - can reach toward center
+        phase: 1.5,
+        currentX: 115,
+        currentY: 85,
+        targetX: 115,
+        targetY: 85,
+        lastSwitchTime: 0,
+        switchInterval: 0.28,
+        transitionSpeed: 13
+      },
+      {
+        el: document.getElementById('leg3'),
+        noise: new PerlinNoise(4),
+        anchorX: 16,  // matches ▝ at col 6
+        anchorY: 32,
+        width: 4,
+        targetKeys: keysRight,  // right outer - stays on right side
+        phase: 2.2,
+        currentX: 145,
+        currentY: 85,
+        targetX: 145,
+        targetY: 85,
+        lastSwitchTime: 0,
+        switchInterval: 0.32,
+        transitionSpeed: 11
+      }
+    ];
+
+    let time = 0;
+    let lastTime = performance.now();
+
+    function animate(currentTime) {
+      const deltaTime = (currentTime - lastTime) / 1000;
+      lastTime = currentTime;
+      time += deltaTime;
+
+      legs.forEach(leg => {
+        if (time - leg.lastSwitchTime > leg.switchInterval) {
+          leg.lastSwitchTime = time;
+
+          const noiseVal = leg.noise.noise1D(time * 0.8 + leg.phase);
+          const keyIndex = Math.floor((noiseVal * 0.5 + 0.5) * leg.targetKeys.length);
+          const newTarget = leg.targetKeys[Math.min(keyIndex, leg.targetKeys.length - 1)];
+
+          leg.targetX = newTarget.x;
+          leg.targetY = newTarget.y;
+
+          leg.switchInterval = 0.2 + leg.noise.noise1D(time + 50) * 0.15 + 0.1;
+        }
+
+        const lerpFactor = 1 - Math.exp(-leg.transitionSpeed * deltaTime);
+        leg.currentX = lerp(leg.currentX, leg.targetX, lerpFactor);
+        leg.currentY = lerp(leg.currentY, leg.targetY, lerpFactor);
+
+        const anchorGlobalX = clauditoX + leg.anchorX + leg.width / 2;
+        const anchorGlobalY = clauditoY + leg.anchorY;
+
+        const dx = leg.currentX - anchorGlobalX;
+        const dy = leg.currentY - anchorGlobalY;
+
+        const length = Math.sqrt(dx * dx + dy * dy);
+        const angle = Math.atan2(dx, dy) * (180 / Math.PI);
+
+        const wobble = leg.noise.noise1D(time * 4 + leg.phase) * 2;
+        const stretchWobble = leg.noise.noise1D(time * 3 + leg.phase + 100) * 2;
+
+        leg.el.setAttribute('height', length + stretchWobble);
+
+        const originX = leg.anchorX + leg.width / 2;
+        const originY = leg.anchorY;
+        leg.el.setAttribute('transform', `rotate(${angle + wobble}, ${originX}, ${originY})`);
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  ]]></script>
+</svg>

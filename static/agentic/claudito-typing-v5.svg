@@ -1,0 +1,220 @@
+<!--
+  Prompt: "The stretch range needs adjusting. It needs to be able to reach the keys that are the maximum distance away. Can you make them intersect the actual positions of keys?"
+
+  Adjusted leg stretch range. Legs now target actual key positions.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="400" height="240">
+  <defs>
+    <linearGradient id="keyTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#666"/>
+      <stop offset="100%" style="stop-color:#444"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .body { fill: #dc7974; }
+    .keyboard-base { fill: #0a0a0a; }
+    .key-well { fill: #111; }
+    .key-cap { fill: url(#keyTop); }
+  </style>
+
+  <!-- Keyboard base -->
+  <rect class="keyboard-base" x="25" y="72" width="150" height="42" rx="5"/>
+  <rect class="key-well" x="30" y="76" width="140" height="34" rx="2"/>
+
+  <!-- Keys with IDs for interaction -->
+  <!-- Top row: y=78, height=9 → surface at y=78 -->
+  <rect id="key-t0" class="key-cap" x="34" y="78" width="13" height="9" rx="2"/>
+  <rect id="key-t1" class="key-cap" x="49" y="78" width="13" height="9" rx="2"/>
+  <rect id="key-t2" class="key-cap" x="64" y="78" width="13" height="9" rx="2"/>
+  <rect id="key-t3" class="key-cap" x="79" y="78" width="13" height="9" rx="2"/>
+  <rect id="key-t4" class="key-cap" x="94" y="78" width="13" height="9" rx="2"/>
+  <rect id="key-t5" class="key-cap" x="109" y="78" width="13" height="9" rx="2"/>
+  <rect id="key-t6" class="key-cap" x="124" y="78" width="13" height="9" rx="2"/>
+  <rect id="key-t7" class="key-cap" x="139" y="78" width="13" height="9" rx="2"/>
+  <rect id="key-t8" class="key-cap" x="154" y="78" width="13" height="9" rx="2"/>
+
+  <!-- Middle row: y=89 -->
+  <rect id="key-m0" class="key-cap" x="37" y="89" width="13" height="9" rx="2"/>
+  <rect id="key-m1" class="key-cap" x="52" y="89" width="13" height="9" rx="2"/>
+  <rect id="key-m2" class="key-cap" x="67" y="89" width="13" height="9" rx="2"/>
+  <rect id="key-m3" class="key-cap" x="82" y="89" width="13" height="9" rx="2"/>
+  <rect id="key-m4" class="key-cap" x="97" y="89" width="13" height="9" rx="2"/>
+  <rect id="key-m5" class="key-cap" x="112" y="89" width="13" height="9" rx="2"/>
+  <rect id="key-m6" class="key-cap" x="127" y="89" width="13" height="9" rx="2"/>
+  <rect id="key-m7" class="key-cap" x="142" y="89" width="13" height="9" rx="2"/>
+
+  <!-- Bottom row with spacebar: y=100 -->
+  <rect id="key-b0" class="key-cap" x="40" y="100" width="13" height="8" rx="2"/>
+  <rect id="key-b1" class="key-cap" x="55" y="100" width="13" height="8" rx="2"/>
+  <rect id="key-space" class="key-cap" x="70" y="100" width="50" height="8" rx="2"/>
+  <rect id="key-b3" class="key-cap" x="122" y="100" width="13" height="8" rx="2"/>
+  <rect id="key-b4" class="key-cap" x="137" y="100" width="13" height="8" rx="2"/>
+  <rect id="key-b5" class="key-cap" x="152" y="100" width="13" height="8" rx="2"/>
+
+  <!-- Claudito body -->
+  <g id="claudito" transform="translate(100, 18)">
+    <!-- Head: ▐▛███▜▌ -->
+    <g class="body">
+      <rect x="-28" y="0" width="4" height="16"/>
+      <rect x="-24" y="0" width="8" height="8"/>
+      <rect x="-24" y="8" width="4" height="8"/>
+      <rect x="-16" y="0" width="24" height="16"/>
+      <rect x="8" y="0" width="8" height="8"/>
+      <rect x="12" y="8" width="4" height="8"/>
+      <rect x="16" y="0" width="4" height="16"/>
+    </g>
+
+    <!-- Torso: ▝▜█████▛▘ -->
+    <g class="body">
+      <rect x="-36" y="16" width="4" height="8"/>
+      <rect x="-32" y="16" width="8" height="8"/>
+      <rect x="-28" y="24" width="4" height="8"/>
+      <rect x="-24" y="16" width="40" height="16"/>
+      <rect x="16" y="16" width="8" height="8"/>
+      <rect x="16" y="24" width="4" height="8"/>
+      <rect x="24" y="16" width="4" height="8"/>
+    </g>
+
+    <!-- Four legs - will be transformed to reach keys -->
+    <rect id="leg0" class="body" x="-16" y="32" width="4" height="20"/>
+    <rect id="leg1" class="body" x="-10" y="32" width="4" height="20"/>
+    <rect id="leg2" class="body" x="6" y="32" width="4" height="20"/>
+    <rect id="leg3" class="body" x="12" y="32" width="4" height="20"/>
+  </g>
+
+  <script type="text/javascript"><![CDATA[
+    // Perlin noise
+    class PerlinNoise {
+      constructor(seed = Math.random() * 10000) {
+        this.p = [];
+        for (let i = 0; i < 256; i++) this.p[i] = i;
+        let n = seed;
+        for (let i = 255; i > 0; i--) {
+          n = (n * 16807) % 2147483647;
+          const j = n % (i + 1);
+          [this.p[i], this.p[j]] = [this.p[j], this.p[i]];
+        }
+        this.p = this.p.concat(this.p);
+      }
+      fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+      lerp(a, b, t) { return a + t * (b - a); }
+      grad(hash, x) { return (hash & 1) === 0 ? x : -x; }
+      noise1D(x) {
+        const xi = Math.floor(x) & 255;
+        const xf = x - Math.floor(x);
+        const u = this.fade(xf);
+        return this.lerp(this.grad(this.p[xi], xf), this.grad(this.p[xi + 1], xf - 1), u);
+      }
+    }
+
+    // Key positions (center x, top y) in global coords
+    const keyPositions = [
+      // Top row
+      { x: 40.5, y: 78 }, { x: 55.5, y: 78 }, { x: 70.5, y: 78 }, { x: 85.5, y: 78 },
+      { x: 100.5, y: 78 }, { x: 115.5, y: 78 }, { x: 130.5, y: 78 }, { x: 145.5, y: 78 }, { x: 160.5, y: 78 },
+      // Middle row
+      { x: 43.5, y: 89 }, { x: 58.5, y: 89 }, { x: 73.5, y: 89 }, { x: 88.5, y: 89 },
+      { x: 103.5, y: 89 }, { x: 118.5, y: 89 }, { x: 133.5, y: 89 }, { x: 148.5, y: 89 },
+      // Bottom row
+      { x: 46.5, y: 100 }, { x: 61.5, y: 100 }, { x: 95, y: 100 }, // spacebar center
+      { x: 128.5, y: 100 }, { x: 143.5, y: 100 }, { x: 158.5, y: 100 }
+    ];
+
+    // Claudito transform offset
+    const clauditoX = 100;
+    const clauditoY = 18;
+
+    // Leg configs - each leg targets a subset of keys
+    const legs = [
+      {
+        el: document.getElementById('leg0'),
+        noise: new PerlinNoise(1),
+        anchorX: -16,  // local x
+        anchorY: 32,   // local y
+        width: 4,
+        // Keys this leg can reach (left side)
+        targetKeys: keyPositions.filter(k => k.x < 75),
+        phase: 0,
+        currentTarget: null,
+        targetTime: 0
+      },
+      {
+        el: document.getElementById('leg1'),
+        noise: new PerlinNoise(2),
+        anchorX: -10,
+        anchorY: 32,
+        width: 4,
+        targetKeys: keyPositions.filter(k => k.x >= 55 && k.x < 100),
+        phase: 0.7,
+        currentTarget: null,
+        targetTime: 0
+      },
+      {
+        el: document.getElementById('leg2'),
+        noise: new PerlinNoise(3),
+        anchorX: 6,
+        anchorY: 32,
+        width: 4,
+        targetKeys: keyPositions.filter(k => k.x >= 85 && k.x < 135),
+        phase: 1.5,
+        currentTarget: null,
+        targetTime: 0
+      },
+      {
+        el: document.getElementById('leg3'),
+        noise: new PerlinNoise(4),
+        anchorX: 12,
+        anchorY: 32,
+        width: 4,
+        targetKeys: keyPositions.filter(k => k.x >= 115),
+        phase: 2.2,
+        currentTarget: null,
+        targetTime: 0
+      }
+    ];
+
+    let time = 0;
+
+    function animate() {
+      time += 0.016;
+
+      legs.forEach(leg => {
+        // Pick a new target key periodically based on noise
+        const keySelectNoise = leg.noise.noise1D(time * 0.5 + leg.phase);
+        const keyIndex = Math.floor((keySelectNoise * 0.5 + 0.5) * leg.targetKeys.length);
+        const targetKey = leg.targetKeys[Math.min(keyIndex, leg.targetKeys.length - 1)];
+
+        // Leg anchor in global coords
+        const anchorGlobalX = clauditoX + leg.anchorX + leg.width / 2;
+        const anchorGlobalY = clauditoY + leg.anchorY;
+
+        // Vector from anchor to target key
+        const dx = targetKey.x - anchorGlobalX;
+        const dy = targetKey.y - anchorGlobalY;
+
+        // Length needed to reach the key
+        const length = Math.sqrt(dx * dx + dy * dy);
+
+        // Angle to rotate leg (from vertical down)
+        const angle = Math.atan2(dx, dy) * (180 / Math.PI);
+
+        // Add noise-based wobble
+        const wobble = leg.noise.noise1D(time * 3 + leg.phase) * 3;
+        const stretchWobble = leg.noise.noise1D(time * 2 + leg.phase + 100) * 4;
+
+        // Apply transforms
+        leg.el.setAttribute('height', length + stretchWobble);
+
+        // Rotate around the top-center of the leg
+        const originX = leg.anchorX + leg.width / 2;
+        const originY = leg.anchorY;
+        leg.el.setAttribute('transform', `rotate(${angle + wobble}, ${originX}, ${originY})`);
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  ]]></script>
+</svg>

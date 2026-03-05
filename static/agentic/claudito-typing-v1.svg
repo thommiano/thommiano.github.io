@@ -1,0 +1,98 @@
+<!--
+  Prompt: "I tihnk version D could be an interesting direction. The keys need to look more like distinctive keys, and we could leverage SVG for that, and we could leverage SVG for the actual legs typing on the keys"
+
+  First SVG version based on ASCII sketch Version D. Rectangular legs and basic keyboard layout.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" width="400" height="320">
+  <style>
+    .body { fill: #dc7974; }
+    .key { fill: #2a2a2a; stroke: #444; stroke-width: 0.5; rx: 2; }
+    .key-pressed { fill: #1a1a1a; transform: translateY(1px); }
+    .keyboard-base { fill: #1a1a1a; }
+    .leg { fill: #dc7974; }
+  </style>
+
+  <!-- Keyboard base -->
+  <rect class="keyboard-base" x="30" y="110" width="140" height="40" rx="4"/>
+
+  <!-- Keyboard keys - 3 rows -->
+  <!-- Top row -->
+  <rect class="key" x="38" y="115" width="12" height="10"/>
+  <rect class="key" x="52" y="115" width="12" height="10"/>
+  <rect class="key" x="66" y="115" width="12" height="10"/>
+  <rect class="key" x="80" y="115" width="12" height="10"/>
+  <rect class="key" x="94" y="115" width="12" height="10"/>
+  <rect class="key" x="108" y="115" width="12" height="10"/>
+  <rect class="key" x="122" y="115" width="12" height="10"/>
+  <rect class="key" x="136" y="115" width="12" height="10"/>
+  <rect class="key" x="150" y="115" width="12" height="10"/>
+
+  <!-- Middle row -->
+  <rect class="key" x="42" y="127" width="12" height="10"/>
+  <rect class="key" x="56" y="127" width="12" height="10"/>
+  <rect class="key key-pressed" x="70" y="127" width="12" height="10"/>
+  <rect class="key" x="84" y="127" width="12" height="10"/>
+  <rect class="key" x="98" y="127" width="12" height="10"/>
+  <rect class="key key-pressed" x="112" y="127" width="12" height="10"/>
+  <rect class="key" x="126" y="127" width="12" height="10"/>
+  <rect class="key" x="140" y="127" width="12" height="10"/>
+
+  <!-- Bottom row / spacebar area -->
+  <rect class="key" x="46" y="139" width="12" height="8"/>
+  <rect class="key" x="60" y="139" width="60" height="8"/>
+  <rect class="key" x="122" y="139" width="12" height="8"/>
+  <rect class="key" x="136" y="139" width="12" height="8"/>
+
+  <!-- Claudito body - block character style -->
+  <!-- Head: ▐▛███▜▌ -->
+  <g class="body" transform="translate(100, 30)">
+    <!-- Head row - 7 cells wide, centered -->
+    <!-- ▐ (right half) -->
+    <rect x="-28" y="0" width="4" height="16"/>
+    <!-- ▛ (all except lower-right) -->
+    <rect x="-24" y="0" width="8" height="8"/>
+    <rect x="-24" y="8" width="4" height="8"/>
+    <!-- █ -->
+    <rect x="-16" y="0" width="8" height="16"/>
+    <!-- █ -->
+    <rect x="-8" y="0" width="8" height="16"/>
+    <!-- █ -->
+    <rect x="0" y="0" width="8" height="16"/>
+    <!-- ▜ (all except lower-left) -->
+    <rect x="8" y="0" width="8" height="8"/>
+    <rect x="12" y="8" width="4" height="8"/>
+    <!-- ▌ (left half) -->
+    <rect x="16" y="0" width="4" height="16"/>
+  </g>
+
+  <!-- Torso: ▝▜█████▛▘ -->
+  <g class="body" transform="translate(100, 46)">
+    <!-- ▝ (upper-right) -->
+    <rect x="-36" y="0" width="4" height="8"/>
+    <!-- ▜ (all except lower-left) -->
+    <rect x="-32" y="0" width="8" height="8"/>
+    <rect x="-28" y="8" width="4" height="8"/>
+    <!-- █████ -->
+    <rect x="-24" y="0" width="40" height="16"/>
+    <!-- ▛ (all except lower-right) -->
+    <rect x="16" y="0" width="8" height="8"/>
+    <rect x="16" y="8" width="4" height="8"/>
+    <!-- ▘ (upper-left) -->
+    <rect x="24" y="0" width="4" height="8"/>
+  </g>
+
+  <!-- Legs going down to keyboard -->
+  <!-- Left leg -->
+  <g class="leg">
+    <rect x="72" y="62" width="8" height="50"/>
+    <!-- Left foot on key -->
+    <ellipse cx="76" cy="127" rx="6" ry="4"/>
+  </g>
+
+  <!-- Right leg -->
+  <g class="leg">
+    <rect x="112" y="62" width="8" height="50"/>
+    <!-- Right foot on key -->
+    <ellipse cx="116" cy="127" rx="6" ry="4"/>
+  </g>
+</svg>

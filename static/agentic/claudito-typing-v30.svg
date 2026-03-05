@@ -1,0 +1,506 @@
+<!--
+  Prompt: "For the next version, can you give it only two pulses, make the maximum glow effect 75%, and make it so that the glow cycle reaches 0% opacity during the glow cycle. So 0-75%. After the second pulse reaches 0, there shouldn't be any further flash. The animation should start from the beginning"
+
+  Golden glow pulses 2 times (0%-75% opacity), then restarts typing.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="400" height="240">
+  <defs>
+    <linearGradient id="keyTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#666"/>
+      <stop offset="100%" style="stop-color:#444"/>
+    </linearGradient>
+    <linearGradient id="keyPressed" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#a6aaf1"/>
+      <stop offset="100%" style="stop-color:#7a7ed0"/>
+    </linearGradient>
+    <linearGradient id="keyGolden" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#e9ae17"/>
+      <stop offset="100%" style="stop-color:#c7940f"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .body { fill: #dc7974; }
+    .keyboard-base { fill: #0a0a0a; }
+    .key-well { fill: #111; }
+    .key-cap { fill: url(#keyTop); transition: fill 0.08s ease-out; }
+    .key-cap.pressed { fill: url(#keyPressed); }
+    .key-cap.golden {
+      fill: url(#keyGolden);
+      animation: goldenPulse 2s ease-in-out 2;
+    }
+    @keyframes goldenPulse {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 0.75; }
+    }
+    .tentacle {
+      fill: none;
+      stroke: #dc7974;
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+  </style>
+
+  <!-- Keyboard base - TKL style -->
+  <rect class="keyboard-base" x="40" y="58" width="120" height="42" rx="2"/>
+  <rect class="key-well" x="42" y="60" width="116" height="38" rx="1"/>
+
+  <g id="keys"></g>
+
+  <path id="leg0" class="tentacle"/>
+  <path id="leg1" class="tentacle"/>
+  <path id="leg2" class="tentacle"/>
+  <path id="leg3" class="tentacle"/>
+
+  <g id="claudito" transform="translate(100, 18)">
+    <g class="body">
+      <rect x="-28" y="0" width="4" height="16"/>
+      <rect x="-24" y="0" width="8" height="8"/>
+      <rect x="-24" y="8" width="4" height="8"/>
+      <rect x="-16" y="0" width="24" height="16"/>
+      <rect x="8" y="0" width="8" height="8"/>
+      <rect x="12" y="8" width="4" height="8"/>
+      <rect x="16" y="0" width="4" height="16"/>
+    </g>
+    <g class="body">
+      <rect x="-36" y="16" width="4" height="8"/>
+      <rect x="-32" y="16" width="8" height="8"/>
+      <rect x="-28" y="24" width="4" height="8"/>
+      <rect x="-24" y="16" width="40" height="16"/>
+      <rect x="16" y="16" width="8" height="8"/>
+      <rect x="16" y="24" width="4" height="8"/>
+      <rect x="24" y="16" width="4" height="8"/>
+    </g>
+  </g>
+
+  <script type="text/javascript"><![CDATA[
+    const textToType = `The Three Rules of Robotics are:
+
+- A robot may not injure a human being or, through inaction, allow a human being to come to harm.
+- A robot must obey the orders given it by human beings except where such orders would conflict with the First Law.
+- A robot must protect its own existence as long as such protection does not conflict with the First or Second Law.`;
+
+    // Character to key mapping (lowercase letters map to uppercase key IDs)
+    const charToKey = {
+      'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E', 'f': 'F', 'g': 'G',
+      'h': 'H', 'i': 'I', 'j': 'J', 'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N',
+      'o': 'O', 'p': 'P', 'q': 'Q', 'r': 'R', 's': 'S', 't': 'T', 'u': 'U',
+      'v': 'V', 'w': 'W', 'x': 'X', 'y': 'Y', 'z': 'Z',
+      'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E', 'F': 'F', 'G': 'G',
+      'H': 'H', 'I': 'I', 'J': 'J', 'K': 'K', 'L': 'L', 'M': 'M', 'N': 'N',
+      'O': 'O', 'P': 'P', 'Q': 'Q', 'R': 'R', 'S': 'S', 'T': 'T', 'U': 'U',
+      'V': 'V', 'W': 'W', 'X': 'X', 'Y': 'Y', 'Z': 'Z',
+      '1': '1', '2': '2', '3': '3', '4': '4', '5': '5',
+      '6': '6', '7': '7', '8': '8', '9': '9', '0': '0',
+      ' ': 'SPACE', '\n': 'ENTER',
+      '.': 'PERIOD', ',': 'COMMA', '-': 'MINUS',
+      ';': 'SEMI', "'": 'QUOTE', ':': 'SEMI',
+      '/': 'SLASH', '\\': 'BSLASH',
+      '[': 'LBRACK', ']': 'RBRACK',
+      '=': 'EQUAL', '`': 'GRAVE'
+    };
+
+    // Characters that need shift
+    const needsShift = new Set('ABCDEFGHIJKLMNOPQRSTUVWXYZ:');
+
+    const U = 5, keyH = 5, gap = 0.5, kbX = 44, kbY = 62;
+
+    const keyMap = {
+      'ESC':    { row: 0, x: 0, w: 1 },
+      'F1':     { row: 0, x: 1.5, w: 1 },
+      'F2':     { row: 0, x: 2.5, w: 1 },
+      'F3':     { row: 0, x: 3.5, w: 1 },
+      'F4':     { row: 0, x: 4.5, w: 1 },
+      'F5':     { row: 0, x: 5.75, w: 1 },
+      'F6':     { row: 0, x: 6.75, w: 1 },
+      'F7':     { row: 0, x: 7.75, w: 1 },
+      'F8':     { row: 0, x: 8.75, w: 1 },
+      'F9':     { row: 0, x: 10.5, w: 1 },
+      'F10':    { row: 0, x: 11.5, w: 1 },
+      'F11':    { row: 0, x: 12.5, w: 1 },
+      'F12':    { row: 0, x: 13.5, w: 1 },
+      'PRTSC':  { row: 0, x: 14.75, w: 1 },
+      'SCRLK':  { row: 0, x: 15.75, w: 1 },
+      'PAUSE':  { row: 0, x: 16.75, w: 1 },
+      'GRAVE':  { row: 1, x: 0, w: 1 },
+      '1':      { row: 1, x: 1, w: 1 },
+      '2':      { row: 1, x: 2, w: 1 },
+      '3':      { row: 1, x: 3, w: 1 },
+      '4':      { row: 1, x: 4, w: 1 },
+      '5':      { row: 1, x: 5, w: 1 },
+      '6':      { row: 1, x: 6, w: 1 },
+      '7':      { row: 1, x: 7, w: 1 },
+      '8':      { row: 1, x: 8, w: 1 },
+      '9':      { row: 1, x: 9, w: 1 },
+      '0':      { row: 1, x: 10, w: 1 },
+      'MINUS':  { row: 1, x: 11, w: 1 },
+      'EQUAL':  { row: 1, x: 12, w: 1 },
+      'BKSP':   { row: 1, x: 13, w: 1.5 },
+      'INS':    { row: 1, x: 14.75, w: 1 },
+      'HOME':   { row: 1, x: 15.75, w: 1 },
+      'PGUP':   { row: 1, x: 16.75, w: 1 },
+      'TAB':    { row: 2, x: 0, w: 1.25 },
+      'Q':      { row: 2, x: 1.25, w: 1 },
+      'W':      { row: 2, x: 2.25, w: 1 },
+      'E':      { row: 2, x: 3.25, w: 1 },
+      'R':      { row: 2, x: 4.25, w: 1 },
+      'T':      { row: 2, x: 5.25, w: 1 },
+      'Y':      { row: 2, x: 6.25, w: 1 },
+      'U':      { row: 2, x: 7.25, w: 1 },
+      'I':      { row: 2, x: 8.25, w: 1 },
+      'O':      { row: 2, x: 9.25, w: 1 },
+      'P':      { row: 2, x: 10.25, w: 1 },
+      'LBRACK': { row: 2, x: 11.25, w: 1 },
+      'RBRACK': { row: 2, x: 12.25, w: 1 },
+      'BSLASH': { row: 2, x: 13.25, w: 1.25 },
+      'DEL':    { row: 2, x: 14.75, w: 1 },
+      'END':    { row: 2, x: 15.75, w: 1 },
+      'PGDN':   { row: 2, x: 16.75, w: 1 },
+      'CAPS':   { row: 3, x: 0, w: 1.5 },
+      'A':      { row: 3, x: 1.5, w: 1 },
+      'S':      { row: 3, x: 2.5, w: 1 },
+      'D':      { row: 3, x: 3.5, w: 1 },
+      'F':      { row: 3, x: 4.5, w: 1 },
+      'G':      { row: 3, x: 5.5, w: 1 },
+      'H':      { row: 3, x: 6.5, w: 1 },
+      'J':      { row: 3, x: 7.5, w: 1 },
+      'K':      { row: 3, x: 8.5, w: 1 },
+      'L':      { row: 3, x: 9.5, w: 1 },
+      'SEMI':   { row: 3, x: 10.5, w: 1 },
+      'QUOTE':  { row: 3, x: 11.5, w: 1 },
+      'ENTER':  { row: 3, x: 12.5, w: 2 },
+      'LSHIFT': { row: 4, x: 0, w: 2 },
+      'Z':      { row: 4, x: 2, w: 1 },
+      'X':      { row: 4, x: 3, w: 1 },
+      'C':      { row: 4, x: 4, w: 1 },
+      'V':      { row: 4, x: 5, w: 1 },
+      'B':      { row: 4, x: 6, w: 1 },
+      'N':      { row: 4, x: 7, w: 1 },
+      'M':      { row: 4, x: 8, w: 1 },
+      'COMMA':  { row: 4, x: 9, w: 1 },
+      'PERIOD': { row: 4, x: 10, w: 1 },
+      'SLASH':  { row: 4, x: 11, w: 1 },
+      'RSHIFT': { row: 4, x: 12, w: 2.5 },
+      'UP':     { row: 4, x: 15.75, w: 1 },
+      'LCTRL':  { row: 5, x: 0, w: 1.25 },
+      'LWIN':   { row: 5, x: 1.25, w: 1 },
+      'LALT':   { row: 5, x: 2.25, w: 1.25 },
+      'SPACE':  { row: 5, x: 3.5, w: 6.5 },
+      'RALT':   { row: 5, x: 10, w: 1.25 },
+      'RWIN':   { row: 5, x: 11.25, w: 1 },
+      'MENU':   { row: 5, x: 12.25, w: 1 },
+      'RCTRL':  { row: 5, x: 13.25, w: 1.25 },
+      'LEFT':   { row: 5, x: 14.75, w: 1 },
+      'DOWN':   { row: 5, x: 15.75, w: 1 },
+      'RIGHT':  { row: 5, x: 16.75, w: 1 }
+    };
+
+    const scale = 1.25;
+    const keysGroup = document.getElementById('keys');
+    const keyElements = {};
+    const keyPositions = {};
+
+    Object.entries(keyMap).forEach(([id, key]) => {
+      const x = kbX + key.x * U * scale;
+      const y = kbY + (5 - key.row) * 6;
+      const w = key.w * U * scale - gap;
+      const h = keyH;
+
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('class', 'key-cap');
+      rect.setAttribute('x', x);
+      rect.setAttribute('y', y);
+      rect.setAttribute('width', w);
+      rect.setAttribute('height', h);
+      rect.setAttribute('rx', '0.5');
+      rect.setAttribute('data-key', id);
+      keysGroup.appendChild(rect);
+
+      keyElements[id] = rect;
+      keyPositions[id] = { x: x + w / 2, y: y + h / 2 };
+    });
+
+    class PerlinNoise {
+      constructor(seed = Math.random() * 10000) {
+        this.p = [];
+        for (let i = 0; i < 256; i++) this.p[i] = i;
+        let n = seed;
+        for (let i = 255; i > 0; i--) {
+          n = (n * 16807) % 2147483647;
+          const j = n % (i + 1);
+          [this.p[i], this.p[j]] = [this.p[j], this.p[i]];
+        }
+        this.p = this.p.concat(this.p);
+      }
+      fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+      lerp(a, b, t) { return a + t * (b - a); }
+      grad(hash, x) { return (hash & 1) === 0 ? x : -x; }
+      noise1D(x) {
+        const xi = Math.floor(x) & 255;
+        const xf = x - Math.floor(x);
+        const u = this.fade(xf);
+        return this.lerp(this.grad(this.p[xi], xf), this.grad(this.p[xi + 1], xf - 1), u);
+      }
+    }
+
+    // Key queue for handling shift + letter combinations
+    let keyQueue = [];
+    let textIndex = 0;
+    let nextCharTime = 0;
+    const baseTypingSpeed = 0.08;
+    let typingComplete = false;
+    let goldenGlowActive = false;
+
+    function triggerGoldenGlow() {
+      goldenGlowActive = true;
+      Object.values(keyElements).forEach(el => {
+        el.classList.remove('pressed');
+        el.classList.add('golden');
+      });
+
+      // After 2 pulses (2s each = 4s), reset and start over
+      setTimeout(resetAndRestart, 4200);
+    }
+
+    function resetAndRestart() {
+      // Remove golden glow from all keys
+      Object.values(keyElements).forEach(el => {
+        el.classList.remove('golden');
+      });
+
+      // Reset state
+      textIndex = 0;
+      keyQueue = [];
+      typingComplete = false;
+      goldenGlowActive = false;
+      activeKeyPresses.clear();
+      nextCharTime = time + 0.5; // Brief pause before restarting
+    }
+
+    function queueNextCharacter() {
+      if (textIndex >= textToType.length) {
+        if (!typingComplete) {
+          typingComplete = true;
+          // Small delay before triggering the glow
+          setTimeout(triggerGoldenGlow, 300);
+        }
+        return false;
+      }
+      const char = textToType[textIndex];
+      textIndex++;
+
+      const keyId = charToKey[char];
+      if (!keyId) return true;
+
+      // Check if this character needs shift
+      if (needsShift.has(char)) {
+        // Use LSHIFT for left-side keys, RSHIFT for right-side keys
+        const keyPos = keyPositions[keyId];
+        const shiftKey = (keyPos && keyPos.x > 100) ? 'LSHIFT' : 'RSHIFT';
+        keyQueue.push(shiftKey);
+      }
+      keyQueue.push(keyId);
+      return true;
+    }
+
+    function getNextKey() {
+      if (keyQueue.length === 0) {
+        if (!queueNextCharacter()) {
+          return null;
+        }
+      }
+      return keyQueue.shift() || null;
+    }
+
+    function getTentacleForKey(keyId) {
+      const pos = keyPositions[keyId];
+      if (!pos) return 0;
+
+      if (pos.x < 68) return 0;
+      if (pos.x < 88) return 1;
+      if (pos.x < 105) return 2;
+      return 3;
+    }
+
+    const activeKeyPresses = new Map();
+
+    function pressKey(keyId) {
+      if (goldenGlowActive) return;
+      const el = keyElements[keyId];
+      if (el) {
+        el.classList.add('pressed');
+        activeKeyPresses.set(keyId, performance.now());
+      }
+    }
+
+    function updateKeyPresses(currentTime) {
+      if (goldenGlowActive) return;
+      activeKeyPresses.forEach((pressTime, keyId) => {
+        const elapsed = currentTime - pressTime;
+        if (elapsed > 120) {
+          const el = keyElements[keyId];
+          if (el) el.classList.remove('pressed');
+          activeKeyPresses.delete(keyId);
+        }
+      });
+    }
+
+    function tapCurve(progress) {
+      if (progress < 0.12) {
+        const t = progress / 0.12;
+        return { reach: -0.15 * Math.sin(t * Math.PI), curl: -0.3 * t, hitting: false };
+      } else if (progress < 0.35) {
+        const t = (progress - 0.12) / 0.23;
+        const ease = t * t;
+        return { reach: ease, curl: 0.4 * ease, hitting: false };
+      } else if (progress < 0.5) {
+        const t = (progress - 0.35) / 0.15;
+        return { reach: 1.0, curl: 0.4 - 0.1 * Math.sin(t * Math.PI), hitting: true };
+      } else {
+        const t = (progress - 0.5) / 0.5;
+        const ease = 1 - (1 - t) * (1 - t);
+        return { reach: 1 - ease, curl: 0.3 * (1 - ease), hitting: false };
+      }
+    }
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    const clauditoX = 100, clauditoY = 18;
+
+    const tentacles = [
+      {
+        el: document.getElementById('leg0'),
+        anchorX: clauditoX - 18, anchorY: clauditoY + 34,
+        hoverX: 58, hoverY: 70,
+        noise: { curl1: new PerlinNoise(1), curl2: new PerlinNoise(11), sway: new PerlinNoise(21), hover: new PerlinNoise(31) },
+        phase: 0, tapping: false, tapProgress: 0, tapDuration: 0.25,
+        targetKey: null, targetPos: null, preTapX: 0, preTapY: 0, keyPressed: false
+      },
+      {
+        el: document.getElementById('leg1'),
+        anchorX: clauditoX - 10, anchorY: clauditoY + 34,
+        hoverX: 78, hoverY: 70,
+        noise: { curl1: new PerlinNoise(2), curl2: new PerlinNoise(12), sway: new PerlinNoise(22), hover: new PerlinNoise(32) },
+        phase: 1.3, tapping: false, tapProgress: 0, tapDuration: 0.22,
+        targetKey: null, targetPos: null, preTapX: 0, preTapY: 0, keyPressed: false
+      },
+      {
+        el: document.getElementById('leg2'),
+        anchorX: clauditoX + 10, anchorY: clauditoY + 34,
+        hoverX: 96, hoverY: 70,
+        noise: { curl1: new PerlinNoise(3), curl2: new PerlinNoise(13), sway: new PerlinNoise(23), hover: new PerlinNoise(33) },
+        phase: 2.7, tapping: false, tapProgress: 0, tapDuration: 0.24,
+        targetKey: null, targetPos: null, preTapX: 0, preTapY: 0, keyPressed: false
+      },
+      {
+        el: document.getElementById('leg3'),
+        anchorX: clauditoX + 18, anchorY: clauditoY + 34,
+        hoverX: 118, hoverY: 70,
+        noise: { curl1: new PerlinNoise(4), curl2: new PerlinNoise(14), sway: new PerlinNoise(24), hover: new PerlinNoise(34) },
+        phase: 4.1, tapping: false, tapProgress: 0, tapDuration: 0.26,
+        targetKey: null, targetPos: null, preTapX: 0, preTapY: 0, keyPressed: false
+      }
+    ];
+
+    let time = 0;
+    let lastTime = performance.now();
+
+    function animate(currentTime) {
+      const deltaTime = (currentTime - lastTime) / 1000;
+      lastTime = currentTime;
+      time += deltaTime;
+
+      updateKeyPresses(currentTime);
+
+      if (!typingComplete && time >= nextCharTime) {
+        const keyId = getNextKey();
+        if (keyId && keyPositions[keyId]) {
+          const tentacleIdx = getTentacleForKey(keyId);
+          const t = tentacles[tentacleIdx];
+
+          if (!t.tapping) {
+            const n = t.noise;
+            const hoverOffsetX = n.hover.noise1D(time * 0.4 + t.phase) * 15;
+            const hoverOffsetY = n.hover.noise1D(time * 0.5 + t.phase + 100) * 8;
+
+            t.targetKey = keyId;
+            t.targetPos = keyPositions[keyId];
+            t.preTapX = t.hoverX + hoverOffsetX;
+            t.preTapY = t.hoverY + hoverOffsetY;
+            t.tapping = true;
+            t.tapProgress = 0;
+            t.keyPressed = false;
+
+            // Faster timing for shift keys, normal for others
+            const isShift = keyId === 'LSHIFT' || keyId === 'RSHIFT';
+            const speedVariation = isShift ? 0.5 : (0.7 + Math.random() * 0.6);
+            nextCharTime = time + baseTypingSpeed * speedVariation;
+          } else {
+            nextCharTime = time + 0.02;
+          }
+        } else if (!typingComplete) {
+          nextCharTime = time + baseTypingSpeed * 0.3;
+        }
+      }
+
+      tentacles.forEach(t => {
+        const p = t.phase;
+        const n = t.noise;
+
+        const hoverOffsetX = n.hover.noise1D(time * 0.4 + p) * 15;
+        const hoverOffsetY = n.hover.noise1D(time * 0.5 + p + 100) * 8;
+
+        if (t.tapping) {
+          t.tapProgress += deltaTime / t.tapDuration;
+          if (t.tapProgress >= 1) {
+            t.tapping = false;
+            t.tapProgress = 0;
+            t.keyPressed = false;
+          }
+        }
+
+        let tipX, tipY;
+
+        if (t.tapping && t.targetPos) {
+          const tap = tapCurve(t.tapProgress);
+          tipX = lerp(t.preTapX, t.targetPos.x, tap.reach);
+          tipY = lerp(t.preTapY, t.targetPos.y, tap.reach);
+          if (tap.reach < 0) tipY += tap.reach * 10;
+
+          if (tap.hitting && !t.keyPressed) {
+            pressKey(t.targetKey);
+            t.keyPressed = true;
+          }
+        } else {
+          tipX = t.hoverX + hoverOffsetX;
+          tipY = t.hoverY + hoverOffsetY;
+        }
+
+        const dx = tipX - t.anchorX;
+        const dy = tipY - t.anchorY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const perpX = -dy / dist;
+        const perpY = dx / dist;
+
+        const tapCurlVal = t.tapping ? tapCurve(t.tapProgress).curl : 0;
+        const baseCurl1 = n.curl1.noise1D(time * 1.0 + p) * 16;
+        const baseCurl2 = n.curl2.noise1D(time * 1.3 + p + 10) * 20;
+        const curl1 = baseCurl1 * (1 + tapCurlVal);
+        const curl2 = baseCurl2 * (1 + tapCurlVal * 0.6);
+        const sway1 = n.sway.noise1D(time * 0.5 + p) * 5;
+        const sway2 = n.sway.noise1D(time * 0.7 + p + 5) * 7;
+
+        const cp1x = t.anchorX + dx * 0.33 + perpX * curl1 + sway1;
+        const cp1y = t.anchorY + dy * 0.33 + perpY * curl1;
+        const cp2x = t.anchorX + dx * 0.66 + perpX * curl2 + sway2;
+        const cp2y = t.anchorY + dy * 0.66 + perpY * curl2;
+
+        t.el.setAttribute('d', `M ${t.anchorX} ${t.anchorY} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${tipX} ${tipY}`);
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  ]]></script>
+</svg>

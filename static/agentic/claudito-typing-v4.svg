@@ -1,0 +1,214 @@
+<!--
+  Prompt: "The back of the legs should be more fixed to the body, and they should stretch out during their movement"
+
+  Fixed leg anchors at body, stretching motion during typing.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="400" height="240">
+  <defs>
+    <linearGradient id="keyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a4a4a"/>
+      <stop offset="100%" style="stop-color:#2a2a2a"/>
+    </linearGradient>
+    <linearGradient id="keyTop" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#666"/>
+      <stop offset="100%" style="stop-color:#444"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .body { fill: #dc7974; }
+    .keyboard-base { fill: #0a0a0a; }
+    .key-well { fill: #111; }
+    .key-cap { fill: url(#keyTop); }
+  </style>
+
+  <!-- Keyboard base -->
+  <rect class="keyboard-base" x="25" y="72" width="150" height="42" rx="5"/>
+  <rect class="key-well" x="30" y="76" width="140" height="34" rx="2"/>
+
+  <!-- Keys - top row -->
+  <g class="keys-row-1">
+    <rect class="key-cap" x="34" y="78" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="49" y="78" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="64" y="78" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="79" y="78" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="94" y="78" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="109" y="78" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="124" y="78" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="139" y="78" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="154" y="78" width="13" height="9" rx="2"/>
+  </g>
+
+  <!-- Keys - middle row -->
+  <g class="keys-row-2">
+    <rect class="key-cap" x="37" y="89" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="52" y="89" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="67" y="89" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="82" y="89" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="97" y="89" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="112" y="89" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="127" y="89" width="13" height="9" rx="2"/>
+    <rect class="key-cap" x="142" y="89" width="13" height="9" rx="2"/>
+  </g>
+
+  <!-- Keys - bottom row with spacebar -->
+  <g class="keys-row-3">
+    <rect class="key-cap" x="40" y="100" width="13" height="8" rx="2"/>
+    <rect class="key-cap" x="55" y="100" width="13" height="8" rx="2"/>
+    <rect class="key-cap" x="70" y="100" width="50" height="8" rx="2"/>
+    <rect class="key-cap" x="122" y="100" width="13" height="8" rx="2"/>
+    <rect class="key-cap" x="137" y="100" width="13" height="8" rx="2"/>
+    <rect class="key-cap" x="152" y="100" width="13" height="8" rx="2"/>
+  </g>
+
+  <!-- Claudito body -->
+  <g id="claudito" transform="translate(100, 18)">
+    <!-- Head: ▐▛███▜▌ -->
+    <g class="body">
+      <rect x="-28" y="0" width="4" height="16"/>
+      <rect x="-24" y="0" width="8" height="8"/>
+      <rect x="-24" y="8" width="4" height="8"/>
+      <rect x="-16" y="0" width="24" height="16"/>
+      <rect x="8" y="0" width="8" height="8"/>
+      <rect x="12" y="8" width="4" height="8"/>
+      <rect x="16" y="0" width="4" height="16"/>
+    </g>
+
+    <!-- Torso: ▝▜█████▛▘ -->
+    <g class="body">
+      <rect x="-36" y="16" width="4" height="8"/>
+      <rect x="-32" y="16" width="8" height="8"/>
+      <rect x="-28" y="24" width="4" height="8"/>
+      <rect x="-24" y="16" width="40" height="16"/>
+      <rect x="16" y="16" width="8" height="8"/>
+      <rect x="16" y="24" width="4" height="8"/>
+      <rect x="24" y="16" width="4" height="8"/>
+    </g>
+
+    <!-- Four legs - anchored at top, stretch downward -->
+    <!-- Using transform-origin at top of each leg -->
+    <rect id="leg0" class="body" x="-16" y="32" width="4" height="20"/>
+    <rect id="leg1" class="body" x="-10" y="32" width="4" height="20"/>
+    <rect id="leg2" class="body" x="6" y="32" width="4" height="20"/>
+    <rect id="leg3" class="body" x="12" y="32" width="4" height="20"/>
+  </g>
+
+  <script type="text/javascript"><![CDATA[
+    // Perlin noise implementation
+    class PerlinNoise {
+      constructor(seed = Math.random() * 10000) {
+        this.p = [];
+        for (let i = 0; i < 256; i++) this.p[i] = i;
+        let n = seed;
+        for (let i = 255; i > 0; i--) {
+          n = (n * 16807) % 2147483647;
+          const j = n % (i + 1);
+          [this.p[i], this.p[j]] = [this.p[j], this.p[i]];
+        }
+        this.p = this.p.concat(this.p);
+      }
+
+      fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+      lerp(a, b, t) { return a + t * (b - a); }
+      grad(hash, x) { return (hash & 1) === 0 ? x : -x; }
+
+      noise1D(x) {
+        const xi = Math.floor(x) & 255;
+        const xf = x - Math.floor(x);
+        const u = this.fade(xf);
+        return this.lerp(
+          this.grad(this.p[xi], xf),
+          this.grad(this.p[xi + 1], xf - 1),
+          u
+        );
+      }
+    }
+
+    // Leg configuration - anchored at top (y=32), stretches down
+    const legs = [
+      {
+        el: document.getElementById('leg0'),
+        noise: new PerlinNoise(1),
+        anchorX: -16,  // Fixed x anchor point
+        anchorY: 32,   // Fixed y anchor (attached to body)
+        baseHeight: 20,
+        freqStretch: 1.2,
+        freqSkew: 0.8,
+        ampStretch: 12,  // How much it can stretch
+        ampSkew: 15,     // Skew angle range in degrees
+        phase: 0
+      },
+      {
+        el: document.getElementById('leg1'),
+        noise: new PerlinNoise(2),
+        anchorX: -10,
+        anchorY: 32,
+        baseHeight: 20,
+        freqStretch: 1.0,
+        freqSkew: 1.1,
+        ampStretch: 10,
+        ampSkew: 12,
+        phase: 0.8
+      },
+      {
+        el: document.getElementById('leg2'),
+        noise: new PerlinNoise(3),
+        anchorX: 6,
+        anchorY: 32,
+        baseHeight: 20,
+        freqStretch: 1.1,
+        freqSkew: 0.9,
+        ampStretch: 10,
+        ampSkew: 12,
+        phase: 1.6
+      },
+      {
+        el: document.getElementById('leg3'),
+        noise: new PerlinNoise(4),
+        anchorX: 12,
+        anchorY: 32,
+        baseHeight: 20,
+        freqStretch: 1.3,
+        freqSkew: 1.0,
+        ampStretch: 12,
+        ampSkew: 15,
+        phase: 2.4
+      }
+    ];
+
+    let time = 0;
+
+    function animate() {
+      time += 0.02;
+
+      legs.forEach(leg => {
+        // Perlin noise values
+        const noiseStretch = leg.noise.noise1D(time * leg.freqStretch + leg.phase);
+        const noiseSkew = leg.noise.noise1D(time * leg.freqSkew + leg.phase + 50);
+
+        // Stretch: base height + noise-driven extension (always positive stretch)
+        const stretch = leg.baseHeight + (noiseStretch * 0.5 + 0.5) * leg.ampStretch;
+
+        // Skew angle for sideways reach
+        const skewAngle = noiseSkew * leg.ampSkew;
+
+        // Apply height (stretch)
+        leg.el.setAttribute('height', stretch);
+
+        // Apply skew transform, anchored at top of leg
+        // transform-origin is at the top center of the leg
+        const originX = leg.anchorX + 2; // center of 4-wide leg
+        const originY = leg.anchorY;
+
+        leg.el.setAttribute('transform',
+          `skewX(${skewAngle})`
+        );
+        leg.el.setAttribute('transform-origin', `${originX}px ${originY}px`);
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  ]]></script>
+</svg>

@@ -406,6 +406,12 @@
     let lastTime = performance.now();
 
     function animate(currentTime) {
+      // Skip animation when paused (set by parent page's IntersectionObserver)
+      if (window.isPaused) {
+        lastTime = currentTime;
+        requestAnimationFrame(animate);
+        return;
+      }
       const deltaTime = (currentTime - lastTime) / 1000;
       lastTime = currentTime;
       time += deltaTime;

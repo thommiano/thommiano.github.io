@@ -1119,8 +1119,26 @@
   </div>
 
   <script>
-    // Reload SVGs periodically to keep animations in sync (optional)
-    // setInterval(() => location.reload(), 60000);
+    // Pause off-screen SVG animations to reduce memory/CPU usage
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const obj = entry.target;
+        try {
+          const svgDoc = obj.contentDocument;
+          if (svgDoc && svgDoc.defaultView) {
+            svgDoc.defaultView.isPaused = !entry.isIntersecting;
+          }
+        } catch (e) {
+          // Cross-origin or not loaded yet
+        }
+      });
+    }, { rootMargin: '100px' });
+
+    // Observe all SVG objects once they load
+    document.querySelectorAll('object[type="image/svg+xml"]').forEach(obj => {
+      obj.addEventListener('load', () => observer.observe(obj));
+      if (obj.contentDocument) observer.observe(obj);
+    });
   </script>
 </body>
 </html>

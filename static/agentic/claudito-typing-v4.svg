@@ -179,6 +179,7 @@
     let time = 0;
 
     function animate() {
+      if (window.isPaused) { requestAnimationFrame(animate); return; }
       time += 0.02;
 
       legs.forEach(leg => {

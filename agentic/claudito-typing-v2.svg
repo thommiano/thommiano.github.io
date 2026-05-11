@@ -1,0 +1,119 @@
+<!--
+  Prompt: "There original four think legs should be preservered. I'm imaging they having kind of wave oscilations as the typing motion takes place. The claudito should be closer to the keyboard too"
+
+  Added wave-based typing animation. Claudito positioned closer to keyboard.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 120" width="400" height="240">
+  <style>
+    .body { fill: #dc7974; }
+    .key { fill: #2a2a2a; stroke: #444; stroke-width: 0.5; }
+    .key-pressed { fill: #1a1a1a; }
+    .keyboard-base { fill: #1a1a1a; }
+
+    @keyframes type-left-outer {
+      0%, 100% { transform: translateY(0); }
+      25% { transform: translateY(4px); }
+    }
+    @keyframes type-left-inner {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+    @keyframes type-right-inner {
+      0%, 100% { transform: translateY(0); }
+      75% { transform: translateY(4px); }
+    }
+    @keyframes type-right-outer {
+      0%, 100% { transform: translateY(0); }
+      90% { transform: translateY(4px); }
+    }
+
+    .leg-left-outer { animation: type-left-outer 0.6s ease-in-out infinite; }
+    .leg-left-inner { animation: type-left-inner 0.6s ease-in-out infinite; }
+    .leg-right-inner { animation: type-right-inner 0.6s ease-in-out infinite; }
+    .leg-right-outer { animation: type-right-outer 0.6s ease-in-out infinite; }
+  </style>
+
+  <!-- Keyboard base -->
+  <rect class="keyboard-base" x="30" y="75" width="140" height="35" rx="4"/>
+
+  <!-- Keyboard keys - 3 rows -->
+  <!-- Top row -->
+  <rect class="key" x="38" y="79" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="52" y="79" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="66" y="79" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="80" y="79" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="94" y="79" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="108" y="79" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="122" y="79" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="136" y="79" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="150" y="79" width="12" height="9" rx="1.5"/>
+
+  <!-- Middle row -->
+  <rect class="key" x="42" y="90" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="56" y="90" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="70" y="90" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="84" y="90" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="98" y="90" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="112" y="90" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="126" y="90" width="12" height="9" rx="1.5"/>
+  <rect class="key" x="140" y="90" width="12" height="9" rx="1.5"/>
+
+  <!-- Bottom row / spacebar -->
+  <rect class="key" x="46" y="101" width="12" height="7" rx="1.5"/>
+  <rect class="key" x="60" y="101" width="60" height="7" rx="1.5"/>
+  <rect class="key" x="122" y="101" width="12" height="7" rx="1.5"/>
+  <rect class="key" x="136" y="101" width="12" height="7" rx="1.5"/>
+
+  <!-- Claudito - positioned close to keyboard -->
+  <g transform="translate(100, 20)">
+    <!-- Head: ▐▛███▜▌ (7 cells) -->
+    <g class="body">
+      <!-- ▐ right half -->
+      <rect x="-28" y="0" width="4" height="16"/>
+      <!-- ▛ -->
+      <rect x="-24" y="0" width="8" height="8"/>
+      <rect x="-24" y="8" width="4" height="8"/>
+      <!-- ███ -->
+      <rect x="-16" y="0" width="24" height="16"/>
+      <!-- ▜ -->
+      <rect x="8" y="0" width="8" height="8"/>
+      <rect x="12" y="8" width="4" height="8"/>
+      <!-- ▌ left half -->
+      <rect x="16" y="0" width="4" height="16"/>
+    </g>
+
+    <!-- Torso: ▝▜█████▛▘ (9 cells) -->
+    <g class="body">
+      <!-- ▝ upper-right -->
+      <rect x="-36" y="16" width="4" height="8"/>
+      <!-- ▜ -->
+      <rect x="-32" y="16" width="8" height="8"/>
+      <rect x="-28" y="24" width="4" height="8"/>
+      <!-- █████ -->
+      <rect x="-24" y="16" width="40" height="16"/>
+      <!-- ▛ -->
+      <rect x="16" y="16" width="8" height="8"/>
+      <rect x="16" y="24" width="4" height="8"/>
+      <!-- ▘ upper-left -->
+      <rect x="24" y="16" width="4" height="8"/>
+    </g>
+
+    <!-- Legs: ▘▘ ▝▝ (4 small quadrants with typing animation) -->
+    <!-- Left outer ▘ -->
+    <g class="body leg-left-outer">
+      <rect x="-16" y="32" width="4" height="22"/>
+    </g>
+    <!-- Left inner ▘ -->
+    <g class="body leg-left-inner">
+      <rect x="-10" y="32" width="4" height="22"/>
+    </g>
+    <!-- Right inner ▝ -->
+    <g class="body leg-right-inner">
+      <rect x="6" y="32" width="4" height="22"/>
+    </g>
+    <!-- Right outer ▝ -->
+    <g class="body leg-right-outer">
+      <rect x="12" y="32" width="4" height="22"/>
+    </g>
+  </g>
+</svg>
